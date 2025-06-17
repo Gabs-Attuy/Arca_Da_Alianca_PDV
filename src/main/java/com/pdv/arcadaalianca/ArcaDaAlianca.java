@@ -4,6 +4,8 @@
 
 package com.pdv.arcadaalianca;
 
+import template.TelaInicial;
+
 /**
  *
  * @author gabs
@@ -11,6 +13,7 @@ package com.pdv.arcadaalianca;
 public class ArcaDaAlianca {
 
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+        TelaInicial screen = new TelaInicial();
+        screen.setVisible(true);
     }
 }
