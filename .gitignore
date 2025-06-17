@@ -1,0 +1,30 @@
+# Build directories
+/build/
+/dist/
+
+# NetBeans local project config
+/nbproject/private/
+/nbbuild/
+/nbdist/
+/nbactions.xml
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Compiled class files
+*.class
+
+# Log files
+*.log
+
+# IDE specific
+*.iml
+.idea/
+
+# Gradle
+/build/
+
+# Personal config files
+config.properties
+dbconfig.properties
