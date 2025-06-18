@@ -2,6 +2,7 @@ template\TelaInicial$2.class
 model\ProdutoModel.class
 template\TelaInicial.class
 com\pdv\arcadaalianca\ArcaDaAlianca.class
+dao\ProdutoDAO.class
 config\DBConfig.class
 model\VendaModel.class
 util\UtilsDB.class

@@ -1,3 +1,6 @@
+# Maven Build
+/target/
+
 # Build directories
 /build/
 /dist/
@@ -14,6 +17,8 @@ Thumbs.db
 
 # Compiled class files
 *.class
+*.jar
+*.war
 
 # Log files
 *.log

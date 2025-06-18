@@ -4,7 +4,6 @@
  */
 package util;
 
-import config.DBConfig;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -21,6 +20,7 @@ public class UtilsDB {
     private static final String PASSWORD = DBConfig.getPassword();
     
     public static Connection getConnection() throws Exception {
+        Class.forName("org.postgresql.Driver");
         return DriverManager.getConnection(URL, USER, PASSWORD);
     }
     
