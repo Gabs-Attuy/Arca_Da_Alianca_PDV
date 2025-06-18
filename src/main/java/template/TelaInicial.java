@@ -4,17 +4,26 @@
  */
 package template;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
+
 /**
  *
  * @author jeffe
  */
 public class TelaInicial extends javax.swing.JFrame {
 
+    SimpleDateFormat timeFormat;
+    SimpleDateFormat dateFormat;
     /**
      * Creates new form TelaInicial
      */
     public TelaInicial() {
         initComponents();
+        timeFormat = new SimpleDateFormat("HH:mm:ss");
+        dateFormat = new SimpleDateFormat("EEEE, d 'de' MMMM 'de' yyyy", new Locale("pt", "BR"));
+        startClock();
     }
 
     /**
@@ -28,12 +37,14 @@ public class TelaInicial extends javax.swing.JFrame {
 
         jButton5 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
         btnProdutos = new javax.swing.JButton();
-        btnVendas = new javax.swing.JButton();
         btnEstoque = new javax.swing.JButton();
         btnRelatorios = new javax.swing.JButton();
-        jPanel2 = new javax.swing.JPanel();
+        btnVendas = new javax.swing.JButton();
+        lblDate = new javax.swing.JLabel();
+        lblTime = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        dpPrincipal = new javax.swing.JDesktopPane();
 
         jButton5.setText("jButton5");
 
@@ -41,12 +52,19 @@ public class TelaInicial extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(250, 238, 215));
 
-        jLabel1.setIcon(new javax.swing.ImageIcon("C:\\Users\\jeffe\\OneDrive\\Área de Trabalho\\Projetos de Clientes\\Paulo Messias\\Arca_Da_Alianca_PDV\\src\\main\\java\\resources\\logomarca.png")); // NOI18N
-
+        btnProdutos.setBackground(new java.awt.Color(250, 238, 215));
+        btnProdutos.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnProdutos.setForeground(new java.awt.Color(64, 43, 12));
         btnProdutos.setText("Produtos");
+        btnProdutos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnProdutosActionPerformed(evt);
+            }
+        });
 
-        btnVendas.setText("Vendas");
-
+        btnEstoque.setBackground(new java.awt.Color(250, 238, 215));
+        btnEstoque.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnEstoque.setForeground(new java.awt.Color(64, 43, 12));
         btnEstoque.setText("Estoque");
         btnEstoque.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -54,66 +72,93 @@ public class TelaInicial extends javax.swing.JFrame {
             }
         });
 
+        btnRelatorios.setBackground(new java.awt.Color(250, 238, 215));
+        btnRelatorios.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnRelatorios.setForeground(new java.awt.Color(64, 43, 12));
         btnRelatorios.setText("Relatórios");
 
-        jPanel2.setBackground(new java.awt.Color(61, 27, 9));
+        btnVendas.setBackground(new java.awt.Color(250, 238, 215));
+        btnVendas.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnVendas.setForeground(new java.awt.Color(64, 43, 12));
+        btnVendas.setText("Vendas");
+        btnVendas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVendasActionPerformed(evt);
+            }
+        });
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 12, Short.MAX_VALUE)
-        );
+        lblDate.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblDate.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
+        lblTime.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblTime.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
+        jLabel1.setIcon(new javax.swing.ImageIcon("C:\\Users\\jeffe\\OneDrive\\Área de Trabalho\\Projetos de Clientes\\Paulo Messias\\Arca_Da_Alianca_PDV\\src\\main\\java\\resources\\logomarca.png")); // NOI18N
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(btnEstoque, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(btnVendas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(btnRelatorios, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(btnProdutos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(lblTime, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(lblDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(btnProdutos, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(75, 75, 75)
-                .addComponent(btnVendas, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 92, Short.MAX_VALUE)
-                .addComponent(btnEstoque, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(66, 66, 66)
-                .addComponent(btnRelatorios, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(184, 184, 184)
-                .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(33, 33, 33)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(45, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(28, 28, 28)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(btnProdutos, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnVendas, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnEstoque, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnRelatorios, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap()
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(33, 33, 33)
+                .addComponent(lblDate, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblTime, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(14, 14, 14)
+                .addComponent(btnProdutos)
                 .addGap(18, 18, 18)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(93, 93, 93)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 415, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(114, Short.MAX_VALUE))
+                .addComponent(btnVendas)
+                .addGap(18, 18, 18)
+                .addComponent(btnEstoque)
+                .addGap(19, 19, 19)
+                .addComponent(btnRelatorios)
+                .addContainerGap(364, Short.MAX_VALUE))
+        );
+
+        dpPrincipal.setPreferredSize(new java.awt.Dimension(960, 733));
+
+        javax.swing.GroupLayout dpPrincipalLayout = new javax.swing.GroupLayout(dpPrincipal);
+        dpPrincipal.setLayout(dpPrincipalLayout);
+        dpPrincipalLayout.setHorizontalGroup(
+            dpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 960, Short.MAX_VALUE)
+        );
+        dpPrincipalLayout.setVerticalGroup(
+            dpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(dpPrincipal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(dpPrincipal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
@@ -122,6 +167,16 @@ public class TelaInicial extends javax.swing.JFrame {
     private void btnEstoqueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEstoqueActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnEstoqueActionPerformed
+
+    private void btnProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProdutosActionPerformed
+        InternalFrameProduto tela = new InternalFrameProduto();
+        dpPrincipal.add(tela);
+        tela.setVisible(true);
+    }//GEN-LAST:event_btnProdutosActionPerformed
+
+    private void btnVendasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVendasActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnVendasActionPerformed
 
     /**
      * @param args the command line arguments
@@ -157,15 +212,26 @@ public class TelaInicial extends javax.swing.JFrame {
             }
         });
     }
+    
+    public void startClock() {
+        javax.swing.Timer timer = new javax.swing.Timer(1000, e -> {
+            Calendar now = Calendar.getInstance();
+            lblTime.setText(timeFormat.format(now.getTime()));
+            lblDate.setText(dateFormat.format(now.getTime()));
+        });
+        timer.start();
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEstoque;
     private javax.swing.JButton btnProdutos;
     private javax.swing.JButton btnRelatorios;
     private javax.swing.JButton btnVendas;
+    private javax.swing.JDesktopPane dpPrincipal;
     private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
+    private javax.swing.JLabel lblDate;
+    private javax.swing.JLabel lblTime;
     // End of variables declaration//GEN-END:variables
 }
