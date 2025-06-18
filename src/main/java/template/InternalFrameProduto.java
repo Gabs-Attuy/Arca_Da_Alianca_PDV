@@ -4,6 +4,11 @@
  */
 package template;
 
+import dao.ProdutoDAO;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
+import model.ProdutoModel;
+
 /**
  *
  * @author jeffe
@@ -15,8 +20,32 @@ public class InternalFrameProduto extends javax.swing.JInternalFrame {
      */
     public InternalFrameProduto() {
         initComponents();
+        loadProductTable();
     }
 
+    public void loadProductTable() {
+        ProdutoDAO dao = new ProdutoDAO();
+        List<ProdutoModel> list = dao.getAllProducts();
+        
+        DefaultTableModel table = new DefaultTableModel();
+        table.addColumn("Código");
+        table.addColumn("Nome");
+        table.addColumn("Preço");
+        table.addColumn("Estoque");
+        table.addColumn("Categoria");
+        
+        for (ProdutoModel p : list) {
+            table.addRow(new Object[] {
+                p.getCodigoBarras(), 
+                p.getNome(), 
+                p.getPreco(), 
+                p.getEstoque(), 
+                p.getCategoria()
+            });
+        }
+        
+        productsTable.setModel(table);
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -28,7 +57,7 @@ public class InternalFrameProduto extends javax.swing.JInternalFrame {
 
         jButton3 = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
-        produtosTable = new javax.swing.JTable();
+        productsTable = new javax.swing.JTable();
         newProduct = new javax.swing.JButton();
         updateProduct = new javax.swing.JButton();
         txtFilterProduct = new javax.swing.JTextField();
@@ -40,7 +69,7 @@ public class InternalFrameProduto extends javax.swing.JInternalFrame {
 
         setPreferredSize(new java.awt.Dimension(960, 733));
 
-        produtosTable.setModel(new javax.swing.table.DefaultTableModel(
+        productsTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
                 {null, null, null, null, null},
@@ -59,7 +88,7 @@ public class InternalFrameProduto extends javax.swing.JInternalFrame {
                 return types [columnIndex];
             }
         });
-        jScrollPane2.setViewportView(produtosTable);
+        jScrollPane2.setViewportView(productsTable);
 
         newProduct.setText("Cadastrar produto");
 
@@ -123,7 +152,7 @@ public class InternalFrameProduto extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JButton newProduct;
-    private javax.swing.JTable produtosTable;
+    private javax.swing.JTable productsTable;
     private javax.swing.JTextField txtFilterProduct;
     private javax.swing.JButton updateProduct;
     private javax.swing.JButton updateProduct1;

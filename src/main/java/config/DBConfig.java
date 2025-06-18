@@ -12,6 +12,7 @@ public class DBConfig {
     private static final Properties props = new Properties();
 
     static {
+        System.out.println("Tentando carregar: " + DBConfig.class.getClassLoader().getResource("config.properties"));
         try (InputStream input = DBConfig.class.getClassLoader().getResourceAsStream("config.properties")) {
             if (input == null) {
                 System.out.println("Arquivo config.properties não encontrado!");

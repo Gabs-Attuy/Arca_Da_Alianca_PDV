@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package model;
 
 import java.math.BigDecimal;
@@ -14,41 +10,48 @@ import java.util.UUID;
 public class ProdutoModel {
     
     private UUID uuid;
-    private String nomeProduto;
-    private String categoriaProduto;
-    private BigDecimal precoProduto;
-    private int estoqueProduto;
+    private String nome;
+    private String categoria;
+    private BigDecimal preco;
+    private int estoque;
     private String codigoBarras;
 
-    public ProdutoModel() {}
+    public ProdutoModel() {
+        this.codigoBarras = generateBarCodeEAN13();
+    }
 
-    public ProdutoModel(UUID uuid, String nomeProduto, String categoriaProduto, BigDecimal precoProduto, int estoqueProduto, String codigoBarras) {
+    public ProdutoModel(UUID uuid, String nome, String categoria, BigDecimal preco, String codigoBarras) {
         this.uuid = uuid;
-        this.nomeProduto = nomeProduto;
-        this.categoriaProduto = categoriaProduto;
-        this.precoProduto = precoProduto;
-        this.estoqueProduto = estoqueProduto;
+        this.nome = nome;
+        this.categoria = categoria;
+        this.preco = preco;
+        this.estoque = 0;
         this.codigoBarras = codigoBarras;
+    }
+    
+    public static String generateBarCodeEAN13() {
+        long timestamp = System.currentTimeMillis();
+        return String.valueOf(timestamp).substring(0, 13);
     }
 
     public UUID getUuid() {
         return uuid;
     }
 
-    public String getNomeProduto() {
-        return nomeProduto;
+    public String getNome() {
+        return nome;
     }
 
-    public String getCategoriaProduto() {
-        return categoriaProduto;
+    public String getCategoria() {
+        return categoria;
     }
 
-    public BigDecimal getPrecoProduto() {
-        return precoProduto;
+    public BigDecimal getPreco() {
+        return preco;
     }
 
-    public int getEstoqueProduto() {
-        return estoqueProduto;
+    public int getEstoque() {
+        return estoque;
     }
 
     public String getCodigoBarras() {
@@ -59,23 +62,25 @@ public class ProdutoModel {
         this.uuid = uuid;
     }
 
-    public void setNomeProduto(String nomeProduto) {
-        this.nomeProduto = nomeProduto;
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
-    public void setCategoriaProduto(String categoriaProduto) {
-        this.categoriaProduto = categoriaProduto;
+    public void setCategoria(String categoria) {
+        this.categoria = categoria;
     }
 
-    public void setPrecoProduto(BigDecimal precoProduto) {
-        this.precoProduto = precoProduto;
+    public void setPreco(BigDecimal preco) {
+        this.preco = preco;
     }
 
-    public void setEstoqueProduto(int estoqueProduto) {
-        this.estoqueProduto = estoqueProduto;
+    public void setEstoque(int estoque) {
+        this.estoque = estoque;
     }
 
     public void setCodigoBarras(String codigoBarras) {
         this.codigoBarras = codigoBarras;
     }
+
+   
 }
