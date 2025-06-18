@@ -14,6 +14,7 @@ public class ArcaDaAlianca {
 
     public static void main(String[] args) {
         TelaInicial screen = new TelaInicial();
+        screen.setTitle("PDV - Arca da Aliança");
         screen.setVisible(true);
     }
 }
