@@ -4,6 +4,10 @@ template\TelaInicial.class
 com\pdv\arcadaalianca\ArcaDaAlianca.class
 config\DBConfig.class
 model\VendaModel.class
-template\TelaInicial$1.class
 util\UtilsDB.class
+template\TelaInicial$3.class
 enums\FormaPagamento.class
+template\TelaInicial$4.class
+template\TelaInicial$1.class
+template\InternalFrameProduto$1.class
+template\InternalFrameProduto.class
