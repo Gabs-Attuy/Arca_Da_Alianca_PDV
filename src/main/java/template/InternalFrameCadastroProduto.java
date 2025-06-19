@@ -4,6 +4,7 @@ import dao.ProdutoDAO;
 import java.math.BigDecimal;
 import javax.swing.JOptionPane;
 import model.ProdutoModel;
+import util.Validator;
 
 /**
  *
@@ -17,6 +18,15 @@ public class InternalFrameCadastroProduto extends javax.swing.JInternalFrame {
     public InternalFrameCadastroProduto() {
         initComponents();
         txtCodigoBarras.setText(ProdutoModel.generateBarCodeEAN13());
+        
+        Validator validator = new Validator();
+        
+        txtEstoque.addKeyListener(new java.awt.event.KeyAdapter() {
+            @Override
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                validator.onlyNumber(evt); // Chama o método para impedir letras
+            }
+        });
     }
 
     /**
@@ -69,7 +79,14 @@ public class InternalFrameCadastroProduto extends javax.swing.JInternalFrame {
             }
         });
 
-        cbxCategoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Livros", "Chaveiros", "Bálsamos", "Broches", "Enfeites" }));
+        txtNomeProduto.setName("Nome do produto"); // NOI18N
+
+        txtPreco.setName("Preço"); // NOI18N
+
+        txtEstoque.setName("Estoque"); // NOI18N
+
+        cbxCategoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "- Selecione uma opção -", "Livros", "Chaveiros", "Bálsamos", "Broches", "Enfeites" }));
+        cbxCategoria.setName("Categoria"); // NOI18N
 
         btnCancel.setText("Cancelar");
         btnCancel.addActionListener(new java.awt.event.ActionListener() {
@@ -162,7 +179,7 @@ public class InternalFrameCadastroProduto extends javax.swing.JInternalFrame {
                         .addComponent(txtCodigoBarras, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblAviso)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 126, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 120, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnCancel)
                             .addComponent(btnSubmit))
@@ -181,8 +198,20 @@ public class InternalFrameCadastroProduto extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnCancelActionPerformed
 
     private void btnSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitActionPerformed
-       
+
         try {
+            Validator validator = new Validator();
+            validator.validateNullField(txtNomeProduto);
+            validator.validateNullField(txtEstoque);
+            validator.validatePrice(txtPreco);
+            validator.validateComboBox(cbxCategoria);
+            
+            if (validator.hasErro()) {
+                JOptionPane.showMessageDialog(rootPane, "Não foi possível cadastrar o produto!");
+                JOptionPane.showMessageDialog(rootPane, validator.getMensagensErro());
+                return;
+            }
+            
             ProdutoModel p = new ProdutoModel();
        
             p.setNome(txtNomeProduto.getText());
@@ -200,7 +229,6 @@ public class InternalFrameCadastroProduto extends javax.swing.JInternalFrame {
            e.printStackTrace();
            JOptionPane.showMessageDialog(this, "Erro ao cadastrar produto: " + e.getMessage());
        }
-       
     }//GEN-LAST:event_btnSubmitActionPerformed
 
 
