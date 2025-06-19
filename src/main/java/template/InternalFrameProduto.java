@@ -25,7 +25,7 @@ public class InternalFrameProduto extends javax.swing.JInternalFrame {
 
     public void loadProductTable() {
         ProdutoDAO dao = new ProdutoDAO();
-        List<ProdutoModel> list = dao.getAllProducts();
+        List<ProdutoModel> list = dao.findAll();
         
         DefaultTableModel table = new DefaultTableModel();
         table.addColumn("Código");
