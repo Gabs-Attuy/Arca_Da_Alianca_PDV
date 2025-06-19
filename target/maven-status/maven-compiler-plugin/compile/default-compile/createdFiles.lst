@@ -1,14 +1,3 @@
-template\TelaInicial$2.class
-model\ProdutoModel.class
-template\TelaInicial.class
-com\pdv\arcadaalianca\ArcaDaAlianca.class
-dao\ProdutoDAO.class
-config\DBConfig.class
-model\VendaModel.class
-util\UtilsDB.class
-template\TelaInicial$3.class
-enums\FormaPagamento.class
-template\TelaInicial$4.class
-template\TelaInicial$1.class
-template\InternalFrameProduto$1.class
-template\InternalFrameProduto.class
+interfaces/GenericDAO.class
+interfaces/AbstractDAO.class
+dao/ProdutoDAO.class
