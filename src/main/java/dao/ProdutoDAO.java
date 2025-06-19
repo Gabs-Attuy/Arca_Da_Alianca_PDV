@@ -45,7 +45,7 @@ public class ProdutoDAO extends AbstractDAO<ProdutoModel, UUID>{
     public void save(ProdutoModel p) {
         String sql = "INSERT INTO " + getTableName() + " (nome, categoria, preco, estoque, codigo_barras) VALUES (?, ?, ?, ?, ?)";
 
-        try (PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, p.getNome());
             stmt.setString(2, p.getCategoria());
             stmt.setBigDecimal(3, p.getPreco());

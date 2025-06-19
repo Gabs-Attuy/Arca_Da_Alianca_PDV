@@ -1,3 +1,11 @@
+template\InternalFrameCadastroProduto$3.class
+template\InternalFrameCadastroProduto.class
+dao\ProdutoDAO.class
+template\InternalFrameProduto$2.class
+template\InternalFrameCadastroProduto$2.class
+interfaces\GenericDAO.class
+template\InternalFrameCadastroProduto$1.class
+interfaces\AbstractDAO.class
 interfaces/GenericDAO.class
 interfaces/AbstractDAO.class
 template/InternalFrameProduto$2.class

@@ -169,7 +169,7 @@ public class TelaInicial extends javax.swing.JFrame {
     }//GEN-LAST:event_btnEstoqueActionPerformed
 
     private void btnProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProdutosActionPerformed
-        InternalFrameProduto tela = new InternalFrameProduto();
+        InternalFrameProduto tela = new InternalFrameProduto(dpPrincipal);
         dpPrincipal.add(tela);
         tela.setVisible(true);
     }//GEN-LAST:event_btnProdutosActionPerformed
