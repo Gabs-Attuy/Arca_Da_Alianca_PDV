@@ -22,6 +22,10 @@ import model.ProdutoModel;
 public class InternalFrameProduto extends javax.swing.JInternalFrame {
     
     private JDesktopPane desktop;
+    private ProdutoDAO produtoDAO = new ProdutoDAO();
+    private int paginaAtual = 0;
+    private final int tamanhoPagina = 10;
+    private int totalPaginas = 0;
     /**
      * Creates new form InternalFrameProduto
      */
@@ -66,28 +70,54 @@ public class InternalFrameProduto extends javax.swing.JInternalFrame {
     }
 
     public void loadProductTable() {
-        ProdutoDAO dao = new ProdutoDAO();
-        List<ProdutoModel> list = dao.findAll();
-        
+        List<ProdutoModel> list = produtoDAO.findAllPaged(paginaAtual, tamanhoPagina);
+        int totalRegistros = produtoDAO.countAll();
+        totalPaginas = (int) Math.ceil((double) totalRegistros / tamanhoPagina);
+
         DefaultTableModel table = new DefaultTableModel();
         table.addColumn("Código");
         table.addColumn("Nome");
         table.addColumn("Preço");
         table.addColumn("Estoque");
         table.addColumn("Categoria");
-        
+
         for (ProdutoModel p : list) {
-            table.addRow(new Object[] {
-                p.getCodigoBarras(), 
-                p.getNome(), 
-                p.getPreco(), 
-                p.getEstoque(), 
+            table.addRow(new Object[]{
+                p.getCodigoBarras(),
+                p.getNome(),
+                p.getPreco(),
+                p.getEstoque(),
                 p.getCategoria()
             });
         }
-        
+
         productsTable.setModel(table);
+        jLabel3.setText("Página " + (paginaAtual + 1) + " de " + totalPaginas);
+        configurarFiltro();
     }
+//    public void loadProductTable() {
+//        ProdutoDAO dao = new ProdutoDAO();
+//        List<ProdutoModel> list = dao.findAll();
+//        
+//        DefaultTableModel table = new DefaultTableModel();
+//        table.addColumn("Código");
+//        table.addColumn("Nome");
+//        table.addColumn("Preço");
+//        table.addColumn("Estoque");
+//        table.addColumn("Categoria");
+//        
+//        for (ProdutoModel p : list) {
+//            table.addRow(new Object[] {
+//                p.getCodigoBarras(), 
+//                p.getNome(), 
+//                p.getPreco(), 
+//                p.getEstoque(), 
+//                p.getCategoria()
+//            });
+//        }
+//        
+//        productsTable.setModel(table);
+//    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -106,6 +136,9 @@ public class InternalFrameProduto extends javax.swing.JInternalFrame {
         updateProduct1 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
 
         jButton3.setText("jButton3");
 
@@ -150,6 +183,22 @@ public class InternalFrameProduto extends javax.swing.JInternalFrame {
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel2.setText("Gestão de Produtos");
 
+        jButton1.setText("ANTERIOR <<");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jButton2.setText(">> PRÓXIMO");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setText("jLabel3");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -170,6 +219,14 @@ public class InternalFrameProduto extends javax.swing.JInternalFrame {
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 852, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 362, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(52, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(217, 217, 217)
+                .addComponent(jButton1)
+                .addGap(80, 80, 80)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton2)
+                .addGap(272, 272, 272))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -186,7 +243,12 @@ public class InternalFrameProduto extends javax.swing.JInternalFrame {
                     .addComponent(updateProduct1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 101, Short.MAX_VALUE)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(60, 60, 60))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1)
+                    .addComponent(jButton2)
+                    .addComponent(jLabel3))
+                .addGap(18, 18, 18))
         );
 
         pack();
@@ -200,11 +262,28 @@ public class InternalFrameProduto extends javax.swing.JInternalFrame {
         cadastro.setVisible(true);
     }//GEN-LAST:event_newProductActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        if (paginaAtual > 0) {
+            paginaAtual--;
+            loadProductTable();
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        if (paginaAtual < totalPaginas - 1) {
+            paginaAtual++;
+            loadProductTable();
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JButton newProduct;
     private javax.swing.JTable productsTable;
