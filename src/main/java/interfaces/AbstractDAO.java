@@ -22,18 +22,7 @@ public abstract class AbstractDAO<T, ID> implements GenericDAO<T, ID> {
 
     protected Connection connection;
 
-    public AbstractDAO() {
-        try{
-            this.connection = UtilsDB.getConnection();
-        } catch (Exception ex) {
-            System.getLogger(AbstractDAO.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
-        }
-        
-    }
-
-    public void closeConnection() {
-        UtilsDB.closeConnection(connection);
-    }
+    public AbstractDAO() {}
     
     protected abstract T mapResultSetToEntity(ResultSet rs) throws SQLException;
 
@@ -50,7 +39,8 @@ public abstract class AbstractDAO<T, ID> implements GenericDAO<T, ID> {
     @Override
     public T findById(ID id) {
         String sql = "SELECT * FROM " + getTableName() + " WHERE " + getIdColumn() + " = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+        try (Connection connection = UtilsDB.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setObject(1, id);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
@@ -58,8 +48,8 @@ public abstract class AbstractDAO<T, ID> implements GenericDAO<T, ID> {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            closeConnection();
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
         
         return null;
@@ -69,25 +59,72 @@ public abstract class AbstractDAO<T, ID> implements GenericDAO<T, ID> {
     public List<T> findAll() {
         String sql = "SELECT * FROM " + getTableName();
         List<T> list = new ArrayList<>();
-        try (PreparedStatement stmt = connection.prepareStatement(sql);
+        try (Connection connection = UtilsDB.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
                 list.add(mapResultSetToEntity(rs));
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            closeConnection();
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
         
         return list;
     }
+    
+    @Override
+    public List<T> findAllPaged(int page, int size) {
+        String sql = "SELECT * FROM " + getTableName() + " LIMIT ? OFFSET ?";
+        List<T> list = new ArrayList<>();
+        int offset = page * size;
 
+        try (Connection connection = UtilsDB.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, size);
+            stmt.setInt(2, offset);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    list.add(mapResultSetToEntity(rs));
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        return list;
+    }
+    
+    @Override
+    public int countAll() {
+        String sql = "SELECT COUNT(*) FROM " + getTableName();
+
+        try (Connection connection = UtilsDB.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        return 0;
+    }
+    
     @Override
     public void deleteById(ID id) {
         String sql = "DELETE FROM " + getTableName() + " WHERE " + getIdColumn() + " = ?";
         
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+        try (Connection connection = UtilsDB.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setObject(1, id);
             int affected = stmt.executeUpdate();
             if (affected == 0) {
@@ -95,8 +132,8 @@ public abstract class AbstractDAO<T, ID> implements GenericDAO<T, ID> {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            closeConnection();
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
     

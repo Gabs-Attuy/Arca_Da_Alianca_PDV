@@ -1,12 +1,13 @@
 package dao;
 
 import interfaces.AbstractDAO;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.UUID;
 import model.ProdutoModel;
+import util.UtilsDB;
 
 /**
  *
@@ -15,9 +16,7 @@ import model.ProdutoModel;
  */
 public class ProdutoDAO extends AbstractDAO<ProdutoModel, UUID>{
     
-    public ProdutoDAO() {
-        super();
-    }
+    public ProdutoDAO() {}
 
     @Override
     protected ProdutoModel mapResultSetToEntity(ResultSet rs) throws SQLException {
@@ -45,7 +44,8 @@ public class ProdutoDAO extends AbstractDAO<ProdutoModel, UUID>{
     public void save(ProdutoModel p) {
         String sql = "INSERT INTO " + getTableName() + " (nome, categoria, preco, estoque, codigo_barras) VALUES (?, ?, ?, ?, ?)";
 
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+        try (Connection connection = UtilsDB.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, p.getNome());
             stmt.setString(2, p.getCategoria());
             stmt.setBigDecimal(3, p.getPreco());
@@ -67,8 +67,8 @@ public class ProdutoDAO extends AbstractDAO<ProdutoModel, UUID>{
 
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            closeConnection();
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
         
     }
@@ -77,7 +77,8 @@ public class ProdutoDAO extends AbstractDAO<ProdutoModel, UUID>{
     public void update(ProdutoModel p) {
         String sql = "UPDATE " + getTableName() + " SET nome = ?, categoria = ?, preco = ?, estoque = ?, codigo_barras = ? WHERE " + getIdColumn() + " = ?";
 
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+        try (Connection connection = UtilsDB.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, p.getNome());
             stmt.setString(2, p.getCategoria());
             stmt.setBigDecimal(3, p.getPreco());
@@ -92,8 +93,8 @@ public class ProdutoDAO extends AbstractDAO<ProdutoModel, UUID>{
 
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            closeConnection();
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
         
     }
