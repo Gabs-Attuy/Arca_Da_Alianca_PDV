@@ -37,10 +37,7 @@
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="txtCodigoBarras" alignment="0" max="32767" attributes="0"/>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="lblCodigoBarras" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="110" max="32767" attributes="0"/>
-                          </Group>
+                          <Component id="lblCodigoBarras" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="lblNomeProduto" alignment="0" min="-2" max="-2" attributes="0"/>
@@ -124,7 +121,7 @@
                       <Component id="txtCodigoBarras" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="lblAviso" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="126" max="32767" attributes="0"/>
+                      <EmptySpace pref="120" max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="btnCancel" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="btnSubmit" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -179,22 +176,33 @@
       </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="txtNomeProduto">
+      <Properties>
+        <Property name="name" type="java.lang.String" value="Nome do produto" noResource="true"/>
+      </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="txtPreco">
+      <Properties>
+        <Property name="name" type="java.lang.String" value="Pre&#xe7;o" noResource="true"/>
+      </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="txtEstoque">
+      <Properties>
+        <Property name="name" type="java.lang.String" value="Estoque" noResource="true"/>
+      </Properties>
     </Component>
     <Component class="javax.swing.JComboBox" name="cbxCategoria">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="5">
-            <StringItem index="0" value="Livros"/>
-            <StringItem index="1" value="Chaveiros"/>
-            <StringItem index="2" value="B&#xe1;lsamos"/>
-            <StringItem index="3" value="Broches"/>
-            <StringItem index="4" value="Enfeites"/>
+          <StringArray count="6">
+            <StringItem index="0" value="- Selecione uma op&#xe7;&#xe3;o -"/>
+            <StringItem index="1" value="Livros"/>
+            <StringItem index="2" value="Chaveiros"/>
+            <StringItem index="3" value="B&#xe1;lsamos"/>
+            <StringItem index="4" value="Broches"/>
+            <StringItem index="5" value="Enfeites"/>
           </StringArray>
         </Property>
+        <Property name="name" type="java.lang.String" value="Categoria" noResource="true"/>
       </Properties>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>

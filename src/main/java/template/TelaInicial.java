@@ -21,6 +21,7 @@ public class TelaInicial extends javax.swing.JFrame {
      */
     public TelaInicial() {
         initComponents();
+        setLocationRelativeTo(null);
         timeFormat = new SimpleDateFormat("HH:mm:ss");
         dateFormat = new SimpleDateFormat("EEEE, d 'de' MMMM 'de' yyyy", new Locale("pt", "BR"));
         startClock();
@@ -93,8 +94,6 @@ public class TelaInicial extends javax.swing.JFrame {
         lblTime.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblTime.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
-        jLabel1.setIcon(new javax.swing.ImageIcon("C:\\Users\\jeffe\\OneDrive\\Área de Trabalho\\Projetos de Clientes\\Paulo Messias\\Arca_Da_Alianca_PDV\\src\\main\\java\\resources\\logomarca.png")); // NOI18N
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -130,6 +129,7 @@ public class TelaInicial extends javax.swing.JFrame {
                 .addContainerGap(364, Short.MAX_VALUE))
         );
 
+        dpPrincipal.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         dpPrincipal.setPreferredSize(new java.awt.Dimension(960, 733));
 
         javax.swing.GroupLayout dpPrincipalLayout = new javax.swing.GroupLayout(dpPrincipal);
