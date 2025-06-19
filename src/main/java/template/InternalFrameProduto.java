@@ -6,7 +6,12 @@ package template;
 
 import dao.ProdutoDAO;
 import java.util.List;
+import javax.swing.RowFilter;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 import model.ProdutoModel;
 
 /**
@@ -21,6 +26,40 @@ public class InternalFrameProduto extends javax.swing.JInternalFrame {
     public InternalFrameProduto() {
         initComponents();
         loadProductTable();
+        configurarFiltro();
+    }
+
+    private TableRowSorter<TableModel> sorter;
+
+    private void configurarFiltro() {
+        sorter = new TableRowSorter<>(productsTable.getModel());
+        productsTable.setRowSorter(sorter);
+
+        txtFilterProduct.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                filtrar();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                filtrar();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                filtrar();
+            }
+
+            private void filtrar() {
+                String texto = txtFilterProduct.getText();
+                if (texto.trim().isEmpty()) {
+                    sorter.setRowFilter(null);
+                } else {
+                    sorter.setRowFilter(RowFilter.regexFilter("(?i)" + texto));
+                }
+            }
+        });
     }
 
     public void loadProductTable() {

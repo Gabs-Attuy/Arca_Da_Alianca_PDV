@@ -1,3 +1,4 @@
 interfaces/GenericDAO.class
 interfaces/AbstractDAO.class
+template/InternalFrameProduto$2.class
 dao/ProdutoDAO.class
