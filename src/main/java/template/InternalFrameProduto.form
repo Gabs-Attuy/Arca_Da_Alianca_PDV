@@ -101,6 +101,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Cadastrar produto"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="newProductActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="updateProduct">
       <Properties>

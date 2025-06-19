@@ -178,11 +178,6 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel1">
-          <Properties>
-            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="2" name="C:\Users\jeffe\OneDrive\&#xc1;rea de Trabalho\Projetos de Clientes\Paulo Messias\Arca_Da_Alianca_PDV\src\main\java\resources\logomarca.png"/>
-            </Property>
-          </Properties>
         </Component>
       </SubComponents>
     </Container>

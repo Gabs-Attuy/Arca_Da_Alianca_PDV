@@ -6,6 +6,7 @@ package template;
 
 import dao.ProdutoDAO;
 import java.util.List;
+import javax.swing.JDesktopPane;
 import javax.swing.table.DefaultTableModel;
 import model.ProdutoModel;
 
@@ -14,18 +15,20 @@ import model.ProdutoModel;
  * @author jeffe
  */
 public class InternalFrameProduto extends javax.swing.JInternalFrame {
-
+    
+    private JDesktopPane desktop;
     /**
      * Creates new form InternalFrameProduto
      */
-    public InternalFrameProduto() {
+    public InternalFrameProduto(JDesktopPane desktop) {
         initComponents();
+        this.desktop = desktop;
         loadProductTable();
     }
 
     public void loadProductTable() {
         ProdutoDAO dao = new ProdutoDAO();
-        List<ProdutoModel> list = dao.getAllProducts();
+        List<ProdutoModel> list = dao.findAll();
         
         DefaultTableModel table = new DefaultTableModel();
         table.addColumn("Código");
@@ -91,6 +94,11 @@ public class InternalFrameProduto extends javax.swing.JInternalFrame {
         jScrollPane2.setViewportView(productsTable);
 
         newProduct.setText("Cadastrar produto");
+        newProduct.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                newProductActionPerformed(evt);
+            }
+        });
 
         updateProduct.setText("Atualizar produto");
 
@@ -144,6 +152,14 @@ public class InternalFrameProduto extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void newProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newProductActionPerformed
+        this.dispose(); 
+
+        InternalFrameCadastroProduto cadastro = new InternalFrameCadastroProduto();
+        desktop.add(cadastro);
+        cadastro.setVisible(true);
+    }//GEN-LAST:event_newProductActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
