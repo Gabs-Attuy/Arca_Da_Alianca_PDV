@@ -6,6 +6,7 @@
 /home/gabs/NetBeansProjects/ArcaDaAlianca/src/main/java/interfaces/GenericDAO.java
 /home/gabs/NetBeansProjects/ArcaDaAlianca/src/main/java/model/ProdutoModel.java
 /home/gabs/NetBeansProjects/ArcaDaAlianca/src/main/java/model/VendaModel.java
+/home/gabs/NetBeansProjects/ArcaDaAlianca/src/main/java/template/InternalFrameAlteracaoProduto.java
 /home/gabs/NetBeansProjects/ArcaDaAlianca/src/main/java/template/InternalFrameCadastroProduto.java
 /home/gabs/NetBeansProjects/ArcaDaAlianca/src/main/java/template/InternalFrameProduto.java
 /home/gabs/NetBeansProjects/ArcaDaAlianca/src/main/java/template/TelaInicial.java

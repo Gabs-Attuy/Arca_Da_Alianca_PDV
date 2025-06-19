@@ -21,6 +21,7 @@ public class ProdutoDAO extends AbstractDAO<ProdutoModel, UUID>{
     @Override
     protected ProdutoModel mapResultSetToEntity(ResultSet rs) throws SQLException {
         ProdutoModel p = new ProdutoModel();
+        p.setUuid((UUID) rs.getObject("uuid"));
         p.setNome(rs.getString("nome"));
         p.setPreco(rs.getBigDecimal("preco"));
         p.setEstoque(rs.getInt("estoque"));
@@ -97,6 +98,25 @@ public class ProdutoDAO extends AbstractDAO<ProdutoModel, UUID>{
             ex.printStackTrace();
         }
         
+    }
+    
+    public ProdutoModel findByCodigoBarras(String codigo) {
+        String sql = "SELECT * FROM " + getTableName() + " WHERE codigo_barras = ?";
+        try (Connection conn = UtilsDB.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, codigo);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return mapResultSetToEntity(rs);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        
+        return null;
     }
 
 }

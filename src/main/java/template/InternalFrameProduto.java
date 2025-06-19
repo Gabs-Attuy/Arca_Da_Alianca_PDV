@@ -173,6 +173,11 @@ public class InternalFrameProduto extends javax.swing.JInternalFrame {
         });
 
         updateProduct.setText("Atualizar produto");
+        updateProduct.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                updateProductActionPerformed(evt);
+            }
+        });
 
         txtFilterProduct.setToolTipText("");
 
@@ -275,6 +280,27 @@ public class InternalFrameProduto extends javax.swing.JInternalFrame {
             loadProductTable();
         }
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void updateProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateProductActionPerformed
+        String codigoBarras = txtFilterProduct.getText().trim();
+
+        if (codigoBarras.isEmpty()) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Informe o código de barras para editar.");
+            return;
+        }
+
+        ProdutoModel produto = produtoDAO.findByCodigoBarras(codigoBarras);
+
+        if (produto != null) {
+            this.dispose(); // fecha a tela atual
+
+            InternalFrameAlteracaoProduto alteracao = new InternalFrameAlteracaoProduto(produto);
+            desktop.add(alteracao);
+            alteracao.setVisible(true);
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this, "Produto não encontrado.");
+        }
+    }//GEN-LAST:event_updateProductActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

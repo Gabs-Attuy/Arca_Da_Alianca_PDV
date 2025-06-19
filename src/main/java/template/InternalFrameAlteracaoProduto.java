@@ -1,3 +1,7 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
+ */
 package template;
 
 import dao.ProdutoDAO;
@@ -7,16 +11,27 @@ import model.ProdutoModel;
 
 /**
  *
- * @author Juu
+ * @author gabs
  */
-public class InternalFrameCadastroProduto extends javax.swing.JInternalFrame {
+public class InternalFrameAlteracaoProduto extends javax.swing.JInternalFrame {
 
     /**
-     * Creates new form InternalFrameCadastroProduto
+     * Creates new form InternalFrameAlteracaoProduto
      */
-    public InternalFrameCadastroProduto() {
+    private ProdutoModel produto;
+
+    public InternalFrameAlteracaoProduto(ProdutoModel produto) {
         initComponents();
-        txtCodigoBarras.setText(ProdutoModel.generateBarCodeEAN13());
+        this.produto = produto;
+        preencherCampos();
+    }
+
+    private void preencherCampos() {
+        txtNomeProduto.setText(produto.getNome());
+        txtPreco.setText(produto.getPreco().toString());
+        txtEstoque.setText(String.valueOf(produto.getEstoque()));
+        cbxCategoria.setSelectedItem(produto.getCategoria());
+        txtCodigoBarras.setText(produto.getCodigoBarras());
     }
 
     /**
@@ -28,11 +43,10 @@ public class InternalFrameCadastroProduto extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel7 = new javax.swing.JLabel();
-        jTextField6 = new javax.swing.JTextField();
-        lblTitulo = new javax.swing.JLabel();
         lblCodigoBarras = new javax.swing.JLabel();
+        btnSubmit = new javax.swing.JButton();
         lblNomeProduto = new javax.swing.JLabel();
+        lblAviso = new javax.swing.JLabel();
         lblPreco = new javax.swing.JLabel();
         lblCategoria = new javax.swing.JLabel();
         lblEstoque = new javax.swing.JLabel();
@@ -41,20 +55,24 @@ public class InternalFrameCadastroProduto extends javax.swing.JInternalFrame {
         txtPreco = new javax.swing.JTextField();
         txtEstoque = new javax.swing.JTextField();
         cbxCategoria = new javax.swing.JComboBox<>();
+        lblTitulo = new javax.swing.JLabel();
         btnCancel = new javax.swing.JButton();
-        btnSubmit = new javax.swing.JButton();
-        lblAviso = new javax.swing.JLabel();
 
-        jLabel7.setText("jLabel7");
-
-        jTextField6.setText("jTextField6");
-
-        lblTitulo.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        lblTitulo.setText("Cadastro de Produto");
+        setPreferredSize(new java.awt.Dimension(799, 610));
 
         lblCodigoBarras.setText("Código de barras");
 
+        btnSubmit.setText("Alterar");
+        btnSubmit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSubmitActionPerformed(evt);
+            }
+        });
+
         lblNomeProduto.setText("Nome do produto");
+
+        lblAviso.setFont(new java.awt.Font("Segoe UI", 0, 8)); // NOI18N
+        lblAviso.setText("O código é gerado automaticamente pelo sistema.");
 
         lblPreco.setText("Preço");
 
@@ -71,22 +89,15 @@ public class InternalFrameCadastroProduto extends javax.swing.JInternalFrame {
 
         cbxCategoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Livros", "Chaveiros", "Bálsamos", "Broches", "Enfeites" }));
 
+        lblTitulo.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        lblTitulo.setText("Alteração de Produto");
+
         btnCancel.setText("Cancelar");
         btnCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCancelActionPerformed(evt);
             }
         });
-
-        btnSubmit.setText("Cadastrar");
-        btnSubmit.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSubmitActionPerformed(evt);
-            }
-        });
-
-        lblAviso.setFont(new java.awt.Font("Segoe UI", 0, 8)); // NOI18N
-        lblAviso.setText("O código é gerado automaticamente pelo sistema.");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -172,6 +183,36 @@ public class InternalFrameCadastroProduto extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitActionPerformed
+            
+        try {
+            int novoEstoque = Integer.parseInt(txtEstoque.getText().trim());
+
+            if (novoEstoque < 0) {
+                JOptionPane.showMessageDialog(this,
+                    "O valor do estoque não pode ser negativo.",
+                    "Erro de validação",
+                    JOptionPane.ERROR_MESSAGE);
+                return; // interrompe a ação de salvar
+            }
+        
+            produto.setNome(txtNomeProduto.getText());
+            produto.setCategoria(cbxCategoria.getSelectedItem().toString());
+            produto.setPreco(new BigDecimal(txtPreco.getText()));
+            produto.setEstoque(Integer.parseInt(txtEstoque.getText()));
+            produto.setCodigoBarras(txtCodigoBarras.getText());
+            ProdutoDAO dao = new ProdutoDAO();
+            dao.update(produto);
+
+            JOptionPane.showMessageDialog(this, "Produto alterado com sucesso!");
+            this.dispose();
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Erro ao alterar produto: " + e.getMessage());
+        }
+
+    }//GEN-LAST:event_btnSubmitActionPerformed
+
     private void txtCodigoBarrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCodigoBarrasActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtCodigoBarrasActionPerformed
@@ -180,36 +221,11 @@ public class InternalFrameCadastroProduto extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnCancelActionPerformed
 
-    private void btnSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitActionPerformed
-       
-        try {
-            ProdutoModel p = new ProdutoModel();
-       
-            p.setNome(txtNomeProduto.getText());
-            p.setCategoria(cbxCategoria.getSelectedItem().toString());
-            p.setPreco(new BigDecimal(txtPreco.getText()));
-            p.setEstoque(Integer.parseInt(txtEstoque.getText()));
-            p.setCodigoBarras(txtCodigoBarras.getText());
-
-            ProdutoDAO dao = new ProdutoDAO();
-            dao.save(p);
-
-            JOptionPane.showMessageDialog(this, "Produto cadastrado com sucesso!");
-            this.dispose();
-       } catch (Exception e) {
-           e.printStackTrace();
-           JOptionPane.showMessageDialog(this, "Erro ao cadastrar produto: " + e.getMessage());
-       }
-       
-    }//GEN-LAST:event_btnSubmitActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancel;
     private javax.swing.JButton btnSubmit;
     private javax.swing.JComboBox<String> cbxCategoria;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JTextField jTextField6;
     private javax.swing.JLabel lblAviso;
     private javax.swing.JLabel lblCategoria;
     private javax.swing.JLabel lblCodigoBarras;
