@@ -57,11 +57,17 @@ public class InternalFrameAlteracaoProduto extends javax.swing.JInternalFrame {
         cbxCategoria = new javax.swing.JComboBox<>();
         lblTitulo = new javax.swing.JLabel();
         btnCancel = new javax.swing.JButton();
+        lblAviso1 = new javax.swing.JLabel();
 
-        setPreferredSize(new java.awt.Dimension(799, 610));
+        setPreferredSize(new java.awt.Dimension(960, 733));
 
+        lblCodigoBarras.setFont(new java.awt.Font("Segoe UI", 2, 14)); // NOI18N
+        lblCodigoBarras.setForeground(new java.awt.Color(13, 45, 89));
         lblCodigoBarras.setText("Código de barras");
 
+        btnSubmit.setBackground(new java.awt.Color(13, 45, 89));
+        btnSubmit.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnSubmit.setForeground(new java.awt.Color(255, 255, 255));
         btnSubmit.setText("Alterar");
         btnSubmit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -69,115 +75,137 @@ public class InternalFrameAlteracaoProduto extends javax.swing.JInternalFrame {
             }
         });
 
+        lblNomeProduto.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblNomeProduto.setForeground(new java.awt.Color(13, 45, 89));
         lblNomeProduto.setText("Nome do produto");
 
-        lblAviso.setFont(new java.awt.Font("Segoe UI", 0, 8)); // NOI18N
-        lblAviso.setText("O código é gerado automaticamente pelo sistema.");
+        lblAviso.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
+        lblAviso.setForeground(new java.awt.Color(13, 45, 89));
+        lblAviso.setText("O código é gerado automaticamente pelo sistema e não pode ser alterado.");
 
+        lblPreco.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblPreco.setForeground(new java.awt.Color(13, 45, 89));
         lblPreco.setText("Preço");
 
+        lblCategoria.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblCategoria.setForeground(new java.awt.Color(13, 45, 89));
         lblCategoria.setText("Categoria");
 
+        lblEstoque.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblEstoque.setForeground(new java.awt.Color(13, 45, 89));
         lblEstoque.setText("Estoque");
 
         txtCodigoBarras.setEditable(false);
+        txtCodigoBarras.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         txtCodigoBarras.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtCodigoBarrasActionPerformed(evt);
             }
         });
 
-        cbxCategoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Livros", "Chaveiros", "Bálsamos", "Broches", "Enfeites" }));
+        txtNomeProduto.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtNomeProduto.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(13, 45, 89), 2));
 
-        lblTitulo.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        txtPreco.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtPreco.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(13, 45, 89), 2, true));
+        txtPreco.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtPrecoActionPerformed(evt);
+            }
+        });
+
+        txtEstoque.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtEstoque.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(13, 45, 89), 2));
+
+        cbxCategoria.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        cbxCategoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Livros", "Chaveiros", "Bálsamos", "Broches", "Enfeites" }));
+        cbxCategoria.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(13, 45, 89), 2));
+
+        lblTitulo.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        lblTitulo.setForeground(new java.awt.Color(13, 45, 89));
         lblTitulo.setText("Alteração de Produto");
 
+        btnCancel.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnCancel.setForeground(new java.awt.Color(13, 45, 89));
         btnCancel.setText("Cancelar");
+        btnCancel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(13, 45, 89)));
         btnCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCancelActionPerformed(evt);
             }
         });
 
+        lblAviso1.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
+        lblAviso1.setForeground(new java.awt.Color(13, 45, 89));
+        lblAviso1.setText("Cadastrar o preço com . (Ex: 100.99)");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(78, 78, 78)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtCodigoBarras)
-                            .addComponent(lblCodigoBarras)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lblNomeProduto)
-                                    .addComponent(txtNomeProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(lblPreco, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtPreco, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(btnCancel))
-                                .addGap(0, 0, Short.MAX_VALUE)))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(lblEstoque, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addGap(29, 29, 29))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(lblCategoria)
-                                            .addComponent(cbxCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(txtEstoque, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGap(169, 209, Short.MAX_VALUE))))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btnSubmit)
-                                .addGap(118, 118, 118))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblAviso)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                            .addGap(333, 333, 333)
                             .addComponent(lblTitulo))
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                        .addGroup(layout.createSequentialGroup()
+                            .addGap(234, 234, 234)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(lblNomeProduto)
+                                .addComponent(txtNomeProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 453, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(lblAviso1)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 197, Short.MAX_VALUE)
+                                .addComponent(btnSubmit, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(lblEstoque, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtEstoque)
+                            .addComponent(lblCodigoBarras)
+                            .addComponent(lblAviso)
+                            .addComponent(lblCategoria)
+                            .addComponent(cbxCategoria, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtPreco)
+                            .addComponent(lblPreco, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtCodigoBarras))))
+                .addGap(118, 261, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(29, 29, 29)
+                .addGap(34, 34, 34)
                 .addComponent(lblTitulo)
-                .addGap(66, 66, 66)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(lblNomeProduto)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtNomeProduto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(lblCategoria)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cbxCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(38, 38, 38)
+                .addComponent(lblNomeProduto)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtNomeProduto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(lblEstoque)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtEstoque, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(lblPreco)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtPreco, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(27, 27, 27)
-                        .addComponent(lblCodigoBarras)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtCodigoBarras, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblAviso)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 126, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnCancel)
-                            .addComponent(btnSubmit))
-                        .addGap(102, 102, 102))))
+                .addComponent(lblEstoque)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtEstoque, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
+                .addComponent(lblCodigoBarras)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtCodigoBarras, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblAviso)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(lblCategoria)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cbxCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(lblPreco)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtPreco, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblAviso1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 58, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnSubmit, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(134, 134, 134))
         );
 
         pack();
@@ -221,12 +249,17 @@ public class InternalFrameAlteracaoProduto extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnCancelActionPerformed
 
+    private void txtPrecoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPrecoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtPrecoActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancel;
     private javax.swing.JButton btnSubmit;
     private javax.swing.JComboBox<String> cbxCategoria;
     private javax.swing.JLabel lblAviso;
+    private javax.swing.JLabel lblAviso1;
     private javax.swing.JLabel lblCategoria;
     private javax.swing.JLabel lblCodigoBarras;
     private javax.swing.JLabel lblEstoque;

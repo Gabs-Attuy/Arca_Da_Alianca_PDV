@@ -54,47 +54,76 @@ public class InternalFrameCadastroProduto extends javax.swing.JInternalFrame {
         btnCancel = new javax.swing.JButton();
         btnSubmit = new javax.swing.JButton();
         lblAviso = new javax.swing.JLabel();
+        lblAviso1 = new javax.swing.JLabel();
 
         jLabel7.setText("jLabel7");
 
         jTextField6.setText("jTextField6");
 
-        lblTitulo.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        setPreferredSize(new java.awt.Dimension(960, 733));
+
+        lblTitulo.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        lblTitulo.setForeground(new java.awt.Color(13, 45, 89));
         lblTitulo.setText("Cadastro de Produto");
 
+        lblCodigoBarras.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblCodigoBarras.setForeground(new java.awt.Color(13, 45, 89));
         lblCodigoBarras.setText("Código de barras");
 
+        lblNomeProduto.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblNomeProduto.setForeground(new java.awt.Color(13, 45, 89));
         lblNomeProduto.setText("Nome do produto");
 
+        lblPreco.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblPreco.setForeground(new java.awt.Color(13, 45, 89));
         lblPreco.setText("Preço");
 
+        lblCategoria.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblCategoria.setForeground(new java.awt.Color(13, 45, 89));
         lblCategoria.setText("Categoria");
 
+        lblEstoque.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblEstoque.setForeground(new java.awt.Color(13, 45, 89));
         lblEstoque.setText("Estoque");
 
         txtCodigoBarras.setEditable(false);
+        txtCodigoBarras.setFont(new java.awt.Font("Segoe UI", 2, 14)); // NOI18N
         txtCodigoBarras.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtCodigoBarrasActionPerformed(evt);
             }
         });
 
+        txtNomeProduto.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtNomeProduto.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(13, 45, 89), 2));
         txtNomeProduto.setName("Nome do produto"); // NOI18N
 
+        txtPreco.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtPreco.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(13, 45, 89), 2));
         txtPreco.setName("Preço"); // NOI18N
 
+        txtEstoque.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtEstoque.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(13, 45, 89), 2));
         txtEstoque.setName("Estoque"); // NOI18N
 
+        cbxCategoria.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         cbxCategoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "- Selecione uma opção -", "Livros", "Chaveiros", "Bálsamos", "Broches", "Enfeites" }));
+        cbxCategoria.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(13, 45, 89), 2));
         cbxCategoria.setName("Categoria"); // NOI18N
 
+        btnCancel.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnCancel.setForeground(new java.awt.Color(13, 45, 89));
         btnCancel.setText("Cancelar");
+        btnCancel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(13, 45, 89)));
         btnCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCancelActionPerformed(evt);
             }
         });
 
+        btnSubmit.setBackground(new java.awt.Color(13, 45, 89));
+        btnSubmit.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnSubmit.setForeground(new java.awt.Color(255, 255, 255));
         btnSubmit.setText("Cadastrar");
         btnSubmit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -102,88 +131,81 @@ public class InternalFrameCadastroProduto extends javax.swing.JInternalFrame {
             }
         });
 
-        lblAviso.setFont(new java.awt.Font("Segoe UI", 0, 8)); // NOI18N
-        lblAviso.setText("O código é gerado automaticamente pelo sistema.");
+        lblAviso.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
+        lblAviso.setForeground(new java.awt.Color(13, 45, 89));
+        lblAviso.setText("O código é gerado automaticamente pelo sistema e não pode ser alterado.");
+
+        lblAviso1.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
+        lblAviso1.setForeground(new java.awt.Color(13, 45, 89));
+        lblAviso1.setText("Cadastrar o preço com . (Ex: 100.99)");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(78, 78, 78)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtCodigoBarras)
-                            .addComponent(lblCodigoBarras)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lblNomeProduto)
-                                    .addComponent(txtNomeProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(lblPreco, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtPreco, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(btnCancel))
-                                .addGap(0, 0, Short.MAX_VALUE)))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(lblEstoque, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addGap(29, 29, 29))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(lblCategoria)
-                                            .addComponent(cbxCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(txtEstoque, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGap(169, 209, Short.MAX_VALUE))))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btnSubmit)
-                                .addGap(118, 118, 118))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblAviso)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(txtCodigoBarras, javax.swing.GroupLayout.PREFERRED_SIZE, 426, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                            .addGap(340, 340, 340)
                             .addComponent(lblTitulo))
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                        .addGroup(layout.createSequentialGroup()
+                            .addGap(245, 245, 245)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(lblAviso1)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 164, Short.MAX_VALUE)
+                                        .addComponent(btnSubmit, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(lblNomeProduto)
+                                    .addComponent(txtNomeProduto)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(lblCodigoBarras)
+                                        .addComponent(lblAviso, javax.swing.GroupLayout.Alignment.TRAILING))
+                                    .addComponent(txtEstoque)
+                                    .addComponent(lblCategoria)
+                                    .addComponent(cbxCategoria, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(lblEstoque, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lblPreco, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtPreco))))))
+                .addGap(0, 277, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(29, 29, 29)
                 .addComponent(lblTitulo)
-                .addGap(66, 66, 66)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(lblNomeProduto)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtNomeProduto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(lblCategoria)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cbxCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(42, 42, 42)
+                .addComponent(lblNomeProduto)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtNomeProduto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(lblEstoque)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtEstoque, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(lblPreco)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtPreco, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(27, 27, 27)
-                        .addComponent(lblCodigoBarras)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtCodigoBarras, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblAviso)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 120, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnCancel)
-                            .addComponent(btnSubmit))
-                        .addGap(102, 102, 102))))
+                .addComponent(lblEstoque)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtEstoque, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(25, 25, 25)
+                .addComponent(lblCodigoBarras)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtCodigoBarras, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblAviso)
+                .addGap(18, 18, 18)
+                .addComponent(lblCategoria)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cbxCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(26, 26, 26)
+                .addComponent(lblPreco)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtPreco, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblAviso1)
+                .addGap(46, 46, 46)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnSubmit, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(126, Short.MAX_VALUE))
         );
 
         pack();
@@ -239,6 +261,7 @@ public class InternalFrameCadastroProduto extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JTextField jTextField6;
     private javax.swing.JLabel lblAviso;
+    private javax.swing.JLabel lblAviso1;
     private javax.swing.JLabel lblCategoria;
     private javax.swing.JLabel lblCodigoBarras;
     private javax.swing.JLabel lblEstoque;

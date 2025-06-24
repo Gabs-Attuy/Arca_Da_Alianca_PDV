@@ -4,6 +4,7 @@
  */
 package template;
 
+import java.awt.Color;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
@@ -51,37 +52,69 @@ public class TelaInicial extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel1.setBackground(new java.awt.Color(250, 238, 215));
+        jPanel1.setBackground(new java.awt.Color(13, 45, 89));
 
-        btnProdutos.setBackground(new java.awt.Color(250, 238, 215));
+        btnProdutos.setBackground(new java.awt.Color(13, 45, 89));
         btnProdutos.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        btnProdutos.setForeground(new java.awt.Color(64, 43, 12));
+        btnProdutos.setForeground(new java.awt.Color(255, 255, 255));
         btnProdutos.setText("Produtos");
+        btnProdutos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnProdutosMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btnProdutosMouseExited(evt);
+            }
+        });
         btnProdutos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnProdutosActionPerformed(evt);
             }
         });
 
-        btnEstoque.setBackground(new java.awt.Color(250, 238, 215));
+        btnEstoque.setBackground(new java.awt.Color(13, 45, 89));
         btnEstoque.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        btnEstoque.setForeground(new java.awt.Color(64, 43, 12));
+        btnEstoque.setForeground(new java.awt.Color(255, 255, 255));
         btnEstoque.setText("Estoque");
+        btnEstoque.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnEstoqueMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btnEstoqueMouseExited(evt);
+            }
+        });
         btnEstoque.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEstoqueActionPerformed(evt);
             }
         });
 
-        btnRelatorios.setBackground(new java.awt.Color(250, 238, 215));
+        btnRelatorios.setBackground(new java.awt.Color(13, 45, 89));
         btnRelatorios.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        btnRelatorios.setForeground(new java.awt.Color(64, 43, 12));
+        btnRelatorios.setForeground(new java.awt.Color(255, 255, 255));
         btnRelatorios.setText("Relatórios");
+        btnRelatorios.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnRelatoriosMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btnRelatoriosMouseExited(evt);
+            }
+        });
 
-        btnVendas.setBackground(new java.awt.Color(250, 238, 215));
+        btnVendas.setBackground(new java.awt.Color(13, 45, 89));
         btnVendas.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        btnVendas.setForeground(new java.awt.Color(64, 43, 12));
+        btnVendas.setForeground(new java.awt.Color(255, 255, 255));
         btnVendas.setText("Vendas");
+        btnVendas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnVendasMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btnVendasMouseExited(evt);
+            }
+        });
         btnVendas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnVendasActionPerformed(evt);
@@ -89,9 +122,11 @@ public class TelaInicial extends javax.swing.JFrame {
         });
 
         lblDate.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblDate.setForeground(new java.awt.Color(255, 255, 255));
         lblDate.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         lblTime.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblTime.setForeground(new java.awt.Color(255, 255, 255));
         lblTime.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -177,6 +212,46 @@ public class TelaInicial extends javax.swing.JFrame {
     private void btnVendasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVendasActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnVendasActionPerformed
+
+    private void btnProdutosMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnProdutosMouseEntered
+        btnProdutos.setBackground(Color.WHITE);
+        btnProdutos.setForeground(new Color(13, 45, 89));
+    }//GEN-LAST:event_btnProdutosMouseEntered
+
+    private void btnProdutosMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnProdutosMouseExited
+        btnProdutos.setBackground(new Color(13, 45, 89));
+        btnProdutos.setForeground(Color.WHITE);
+    }//GEN-LAST:event_btnProdutosMouseExited
+
+    private void btnVendasMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnVendasMouseEntered
+        btnVendas.setBackground(Color.WHITE);
+        btnVendas.setForeground(new Color(13, 45, 89));
+    }//GEN-LAST:event_btnVendasMouseEntered
+
+    private void btnVendasMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnVendasMouseExited
+        btnVendas.setBackground(new Color(13, 45, 89));
+        btnVendas.setForeground(Color.WHITE);
+    }//GEN-LAST:event_btnVendasMouseExited
+
+    private void btnEstoqueMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnEstoqueMouseEntered
+        btnEstoque.setBackground(Color.WHITE);
+        btnEstoque.setForeground(new Color(13, 45, 89));
+    }//GEN-LAST:event_btnEstoqueMouseEntered
+
+    private void btnEstoqueMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnEstoqueMouseExited
+        btnEstoque.setBackground(new Color(13, 45, 89));
+        btnEstoque.setForeground(Color.WHITE);
+    }//GEN-LAST:event_btnEstoqueMouseExited
+
+    private void btnRelatoriosMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRelatoriosMouseEntered
+        btnRelatorios.setBackground(Color.WHITE);
+        btnRelatorios.setForeground(new Color(13, 45, 89));
+    }//GEN-LAST:event_btnRelatoriosMouseEntered
+
+    private void btnRelatoriosMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRelatoriosMouseExited
+        btnRelatorios.setBackground(new Color(13, 45, 89));
+        btnRelatorios.setForeground(Color.WHITE);
+    }//GEN-LAST:event_btnRelatoriosMouseExited
 
     /**
      * @param args the command line arguments
