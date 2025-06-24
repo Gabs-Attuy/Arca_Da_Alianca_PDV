@@ -84,4 +84,12 @@ public class Validator {
         } else
             comboBox.setBorder(UIManager.getBorder("ComboBox.border"));
     }
+
+    public void barCodeSearchValidate(KeyEvent evt) {
+        char c = evt.getKeyChar();
+        JTextField txt = (JTextField) evt.getSource();
+        if (!Character.isDigit(c) || txt.getText().length() >= 13) {
+            evt.consume();
+        } 
+    }
 }

@@ -5,6 +5,8 @@
 package template;
 
 import dao.ProdutoDAO;
+import java.awt.Color;
+import java.awt.Font;
 import java.util.List;
 import javax.swing.JDesktopPane;
 import javax.swing.RowFilter;
@@ -14,6 +16,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import model.ProdutoModel;
+import util.Validator;
 
 /**
  *
@@ -32,7 +35,20 @@ public class InternalFrameProduto extends javax.swing.JInternalFrame {
     public InternalFrameProduto(JDesktopPane desktop) {
         initComponents();
         this.desktop = desktop;
+        Validator validator = new Validator();
+        
+        txtBarCodeSearch.addKeyListener(new java.awt.event.KeyAdapter() {
+            @Override
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                validator.barCodeSearchValidate(evt);
+            }
+        });
+        
         loadProductTable();
+        
+        productsTable.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 14));
+        productsTable.getTableHeader().setBackground(new Color(13, 45, 89));
+        productsTable.getTableHeader().setForeground(Color.WHITE);
         configurarFiltro();
     }
 
@@ -42,7 +58,7 @@ public class InternalFrameProduto extends javax.swing.JInternalFrame {
         sorter = new TableRowSorter<>(productsTable.getModel());
         productsTable.setRowSorter(sorter);
 
-        txtFilterProduct.getDocument().addDocumentListener(new DocumentListener() {
+        txtBarCodeSearch.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
                 filtrar();
@@ -59,7 +75,7 @@ public class InternalFrameProduto extends javax.swing.JInternalFrame {
             }
 
             private void filtrar() {
-                String texto = txtFilterProduct.getText();
+                String texto = txtBarCodeSearch.getText();
                 if (texto.trim().isEmpty()) {
                     sorter.setRowFilter(null);
                 } else {
@@ -85,39 +101,30 @@ public class InternalFrameProduto extends javax.swing.JInternalFrame {
             table.addRow(new Object[]{
                 p.getCodigoBarras(),
                 p.getNome(),
-                p.getPreco(),
+                "R$ " + String.format("%.2f", p.getPreco()),
                 p.getEstoque(),
                 p.getCategoria()
             });
         }
 
         productsTable.setModel(table);
+        
+        // Centraliza cabeçalhos
+        ((javax.swing.table.DefaultTableCellRenderer) productsTable.getTableHeader().getDefaultRenderer())
+        .setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        
+        // Centraliza "Código" e "Estoque"
+        javax.swing.table.DefaultTableCellRenderer centerRenderer = new javax.swing.table.DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        productsTable.getColumnModel().getColumn(0).setCellRenderer(centerRenderer); // Código
+        productsTable.getColumnModel().getColumn(2).setCellRenderer(centerRenderer); // Preço
+        productsTable.getColumnModel().getColumn(3).setCellRenderer(centerRenderer); // Estoque
+        productsTable.getColumnModel().getColumn(4).setCellRenderer(centerRenderer); // Categoria
+        
         jLabel3.setText("Página " + (paginaAtual + 1) + " de " + totalPaginas);
         configurarFiltro();
     }
-//    public void loadProductTable() {
-//        ProdutoDAO dao = new ProdutoDAO();
-//        List<ProdutoModel> list = dao.findAll();
-//        
-//        DefaultTableModel table = new DefaultTableModel();
-//        table.addColumn("Código");
-//        table.addColumn("Nome");
-//        table.addColumn("Preço");
-//        table.addColumn("Estoque");
-//        table.addColumn("Categoria");
-//        
-//        for (ProdutoModel p : list) {
-//            table.addRow(new Object[] {
-//                p.getCodigoBarras(), 
-//                p.getNome(), 
-//                p.getPreco(), 
-//                p.getEstoque(), 
-//                p.getCategoria()
-//            });
-//        }
-//        
-//        productsTable.setModel(table);
-//    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -132,8 +139,7 @@ public class InternalFrameProduto extends javax.swing.JInternalFrame {
         productsTable = new javax.swing.JTable();
         newProduct = new javax.swing.JButton();
         updateProduct = new javax.swing.JButton();
-        txtFilterProduct = new javax.swing.JTextField();
-        updateProduct1 = new javax.swing.JButton();
+        txtBarCodeSearch = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
@@ -143,8 +149,10 @@ public class InternalFrameProduto extends javax.swing.JInternalFrame {
 
         jButton3.setText("jButton3");
 
+        setBackground(new java.awt.Color(255, 255, 255));
         setPreferredSize(new java.awt.Dimension(960, 733));
 
+        productsTable.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         productsTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
@@ -164,8 +172,15 @@ public class InternalFrameProduto extends javax.swing.JInternalFrame {
                 return types [columnIndex];
             }
         });
+        productsTable.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        productsTable.setGridColor(new java.awt.Color(204, 204, 204));
+        productsTable.setSelectionBackground(new java.awt.Color(13, 45, 89));
+        productsTable.setSelectionForeground(new java.awt.Color(255, 255, 255));
         jScrollPane2.setViewportView(productsTable);
 
+        newProduct.setBackground(new java.awt.Color(13, 45, 89));
+        newProduct.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        newProduct.setForeground(new java.awt.Color(255, 255, 255));
         newProduct.setText("Cadastrar produto");
         newProduct.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -173,6 +188,9 @@ public class InternalFrameProduto extends javax.swing.JInternalFrame {
             }
         });
 
+        updateProduct.setBackground(new java.awt.Color(13, 45, 89));
+        updateProduct.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        updateProduct.setForeground(new java.awt.Color(255, 255, 255));
         updateProduct.setText("Atualizar produto");
         updateProduct.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -180,15 +198,18 @@ public class InternalFrameProduto extends javax.swing.JInternalFrame {
             }
         });
 
-        txtFilterProduct.setToolTipText("");
+        txtBarCodeSearch.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtBarCodeSearch.setToolTipText("");
 
-        updateProduct1.setText("Buscar");
+        jLabel1.setText("Insira o código de barras para buscar um produto");
 
-        jLabel1.setText("Selecione a caixa de texto e escaneie o código de barras para encontrar o produto");
-
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(13, 45, 89));
         jLabel2.setText("Produtos cadastrados no sistema");
 
+        jButton1.setBackground(new java.awt.Color(13, 45, 89));
+        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jButton1.setForeground(new java.awt.Color(255, 255, 255));
         jButton1.setText("ANTERIOR <<");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -196,6 +217,9 @@ public class InternalFrameProduto extends javax.swing.JInternalFrame {
             }
         });
 
+        jButton2.setBackground(new java.awt.Color(13, 45, 89));
+        jButton2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jButton2.setForeground(new java.awt.Color(255, 255, 255));
         jButton2.setText(">> PRÓXIMO");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -203,9 +227,12 @@ public class InternalFrameProduto extends javax.swing.JInternalFrame {
             }
         });
 
-        jLabel3.setText("jLabel3");
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(13, 45, 89));
+        jLabel3.setText("numberOfPages");
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(13, 45, 89));
         jLabel4.setText("Gestão de Produtos");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -219,20 +246,19 @@ public class InternalFrameProduto extends javax.swing.JInternalFrame {
                         .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 408, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGap(134, 134, 134)
                         .addComponent(jButton1)
-                        .addGap(86, 86, 86)
+                        .addGap(105, 105, 105)
                         .addComponent(jLabel3)
-                        .addGap(100, 100, 100)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton2)
-                        .addGap(254, 254, 254))
+                        .addGap(200, 200, 200))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(updateProduct1, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 408, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                 .addGroup(layout.createSequentialGroup()
-                                    .addComponent(txtFilterProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 273, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtBarCodeSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 273, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(updateProduct)
                                     .addGap(18, 18, 18)
@@ -252,10 +278,8 @@ public class InternalFrameProduto extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(newProduct)
                     .addComponent(updateProduct)
-                    .addComponent(txtFilterProduct, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(updateProduct1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
+                    .addComponent(txtBarCodeSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 63, Short.MAX_VALUE)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -293,7 +317,7 @@ public class InternalFrameProduto extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void updateProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateProductActionPerformed
-        String codigoBarras = txtFilterProduct.getText().trim();
+        String codigoBarras = txtBarCodeSearch.getText().trim();
 
         if (codigoBarras.isEmpty()) {
             javax.swing.JOptionPane.showMessageDialog(this, "Informe o código de barras para editar.");
@@ -325,8 +349,7 @@ public class InternalFrameProduto extends javax.swing.JInternalFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JButton newProduct;
     private javax.swing.JTable productsTable;
-    private javax.swing.JTextField txtFilterProduct;
+    private javax.swing.JTextField txtBarCodeSearch;
     private javax.swing.JButton updateProduct;
-    private javax.swing.JButton updateProduct1;
     // End of variables declaration//GEN-END:variables
 }
