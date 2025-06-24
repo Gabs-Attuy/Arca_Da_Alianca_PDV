@@ -210,7 +210,9 @@ public class TelaInicial extends javax.swing.JFrame {
     }//GEN-LAST:event_btnProdutosActionPerformed
 
     private void btnVendasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVendasActionPerformed
-        // TODO add your handling code here:
+        InternalFrameVenda tela = new InternalFrameVenda(dpPrincipal);
+        dpPrincipal.add(tela);
+        tela.setVisible(true);
     }//GEN-LAST:event_btnVendasActionPerformed
 
     private void btnProdutosMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnProdutosMouseEntered

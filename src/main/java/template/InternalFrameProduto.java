@@ -113,7 +113,7 @@ public class InternalFrameProduto extends javax.swing.JInternalFrame {
         ((javax.swing.table.DefaultTableCellRenderer) productsTable.getTableHeader().getDefaultRenderer())
         .setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         
-        // Centraliza "Código" e "Estoque"
+        // Centraliza valores
         javax.swing.table.DefaultTableCellRenderer centerRenderer = new javax.swing.table.DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         productsTable.getColumnModel().getColumn(0).setCellRenderer(centerRenderer); // Código
@@ -173,6 +173,7 @@ public class InternalFrameProduto extends javax.swing.JInternalFrame {
             }
         });
         productsTable.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        productsTable.setEnabled(false);
         productsTable.setGridColor(new java.awt.Color(204, 204, 204));
         productsTable.setSelectionBackground(new java.awt.Color(13, 45, 89));
         productsTable.setSelectionForeground(new java.awt.Color(255, 255, 255));

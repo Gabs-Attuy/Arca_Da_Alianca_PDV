@@ -19,4 +19,49 @@ public class VendaModel {
     private Date dataVenda;
     private BigDecimal totalVenda;
     private FormaPagamento formaPagamento;
+
+    public VendaModel() {}
+
+    public VendaModel(UUID uuid, Date dataVenda, BigDecimal totalVenda, FormaPagamento formaPagamento) {
+        this.uuid = uuid;
+        this.dataVenda = dataVenda;
+        this.totalVenda = totalVenda;
+        this.formaPagamento = formaPagamento;
+    }
+
+    public UUID getUuid() {
+        return uuid;
+    }
+
+    public Date getDataVenda() {
+        return dataVenda;
+    }
+
+    public BigDecimal getTotalVenda() {
+        return totalVenda;
+    }
+
+    public FormaPagamento getFormaPagamento() {
+        return formaPagamento;
+    }
+
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
+    }
+
+    public void setDataVenda(Date dataVenda) {
+        this.dataVenda = dataVenda;
+    }
+
+    public void setTotalVenda(BigDecimal totalVenda) {
+        this.totalVenda = totalVenda;
+    }
+
+    public void setFormaPagamento(FormaPagamento formaPagamento) {
+        this.formaPagamento = formaPagamento;
+    }
+    
+    
+    
+    
 }
