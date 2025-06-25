@@ -7,6 +7,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import javax.swing.AbstractButton;
+import javax.swing.ButtonGroup;
 import javax.swing.JDesktopPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -27,6 +29,11 @@ public class InternalFrameVenda extends javax.swing.JInternalFrame {
         initComponents();
         this.desktop = desktop;
         
+        lblTrocoTitle.setVisible(false);
+        txtTroco.setVisible(false);
+        btnCalcTroco.setVisible(false);
+        lblTroco.setVisible(false);
+        
         txtBarCodeSearch.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
@@ -38,12 +45,63 @@ public class InternalFrameVenda extends javax.swing.JInternalFrame {
                     
                     if (produtoAtual != null) {
                         txtNomeProduto.setText(produtoAtual.getNome());
+                        txtNomeProduto.setForeground(Color.BLACK);
                         txtEstoqueAtual.setText(String.valueOf(produtoAtual.getEstoque()));
                     }
                 }
             }
         });
         setTableDesign(tblVendas);
+        
+        rbPix.addActionListener(evt -> atualizarFormaPagamento());
+        rbCredito.addActionListener(evt -> atualizarFormaPagamento());
+        rbDebito.addActionListener(evt -> atualizarFormaPagamento());
+        rbDinheiro.addActionListener(evt -> atualizarFormaPagamento());
+        
+        btnCalcTroco.addActionListener(e -> {
+            try {
+                String valorRecebidoStr = txtTroco.getText().trim().replace(",", ".");
+                BigDecimal valorRecebido = new BigDecimal(valorRecebidoStr);
+
+                String totalVendaStr = lblTotalVenda.getText().replace("TOTAL: R$", "").trim().replace(",", ".");
+                BigDecimal totalVenda = new BigDecimal(totalVendaStr);
+
+                BigDecimal troco = valorRecebido.subtract(totalVenda);
+
+                if (troco.compareTo(BigDecimal.ZERO) < 0) {
+                    javax.swing.JOptionPane.showMessageDialog(this, "Valor insuficiente para a compra!");
+                    lblTroco.setText("TROCO: R$0.00");
+                    return;
+                }
+                
+                lblTroco.setText("TROCO: R$ " + troco.setScale(2, RoundingMode.HALF_UP));
+
+                } catch (NumberFormatException ex) {
+                    javax.swing.JOptionPane.showMessageDialog(this, "O valor de troco inserido é inválido!");
+                }
+            });
+    }
+        
+    private String getSelectedButtonText(ButtonGroup group) {
+        for (java.util.Enumeration<AbstractButton> buttons = group.getElements(); buttons.hasMoreElements();) {
+            AbstractButton button = buttons.nextElement();
+
+            if (button.isSelected()) {
+                return button.getText();
+            }
+        }
+        return null;
+    }
+    
+    private void atualizarFormaPagamento() {
+        String formaPagamento = getSelectedButtonText(buttonGroup1);
+        lblFormaPagamento.setText("PAGAMENTO: " + (formaPagamento != null ? formaPagamento.toUpperCase() : "À DEFINIR"));
+        
+        boolean isDinheiro = rbDinheiro.isSelected();
+        lblTrocoTitle.setVisible(isDinheiro);
+        txtTroco.setVisible(isDinheiro);
+        btnCalcTroco.setVisible(isDinheiro);
+        lblTroco.setVisible(isDinheiro);
     }
     
     public void setTableDesign(JTable table) {
@@ -89,23 +147,28 @@ public class InternalFrameVenda extends javax.swing.JInternalFrame {
         jLabel6 = new javax.swing.JLabel();
         btnAddItemPedido = new javax.swing.JButton();
         lblTotalVenda = new javax.swing.JLabel();
-        lblTotalVenda1 = new javax.swing.JLabel();
+        lblFormaPagamento = new javax.swing.JLabel();
         rbPix = new javax.swing.JRadioButton();
         rbCredito = new javax.swing.JRadioButton();
         rbDebito = new javax.swing.JRadioButton();
         rbDinheiro = new javax.swing.JRadioButton();
         jLabel7 = new javax.swing.JLabel();
         btnDeleteItem = new javax.swing.JButton();
+        txtTroco = new javax.swing.JTextField();
+        lblTrocoTitle = new javax.swing.JLabel();
+        lblTroco = new javax.swing.JLabel();
+        btnCalcTroco = new javax.swing.JButton();
 
         jRadioButton5.setText("jRadioButton5");
 
         setBackground(new java.awt.Color(255, 255, 255));
+        setFrameIcon(null);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(13, 45, 89));
         jLabel1.setText("Finalizar Venda");
 
-        jLabel2.setText("Insira o código de barras para buscar um produto");
+        jLabel2.setText("Insira o código de barras do produto");
 
         txtBarCodeSearch.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         txtBarCodeSearch.setToolTipText("");
@@ -138,14 +201,13 @@ public class InternalFrameVenda extends javax.swing.JInternalFrame {
         tblVendas.setGridColor(new java.awt.Color(204, 204, 204));
         tblVendas.setSelectionBackground(new java.awt.Color(13, 45, 89));
         tblVendas.setSelectionForeground(new java.awt.Color(255, 255, 255));
+        tblVendas.getTableHeader().setResizingAllowed(false);
         jScrollPane2.setViewportView(tblVendas);
 
         txtNomeProduto.setEditable(false);
-        txtNomeProduto.setBackground(new java.awt.Color(230, 230, 230));
-        txtNomeProduto.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtNomeProduto.setFont(new java.awt.Font("Segoe UI", 2, 14)); // NOI18N
         txtNomeProduto.setToolTipText("");
         txtNomeProduto.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(13, 45, 89), 2));
-        txtNomeProduto.setEnabled(false);
         txtNomeProduto.setSelectedTextColor(new java.awt.Color(0, 0, 0));
         txtNomeProduto.setSelectionColor(new java.awt.Color(0, 0, 0));
         txtNomeProduto.addActionListener(new java.awt.event.ActionListener() {
@@ -158,14 +220,12 @@ public class InternalFrameVenda extends javax.swing.JInternalFrame {
 
         jLabel4.setText("Estoque atual");
 
-        jLabel5.setText("Quantidade da venda");
+        jLabel5.setText("Qtd. da venda");
 
         txtEstoqueAtual.setEditable(false);
-        txtEstoqueAtual.setBackground(new java.awt.Color(230, 230, 230));
-        txtEstoqueAtual.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtEstoqueAtual.setFont(new java.awt.Font("Segoe UI", 2, 14)); // NOI18N
         txtEstoqueAtual.setToolTipText("");
         txtEstoqueAtual.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(13, 45, 89), 2));
-        txtEstoqueAtual.setEnabled(false);
         txtEstoqueAtual.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtEstoqueAtualActionPerformed(evt);
@@ -195,13 +255,13 @@ public class InternalFrameVenda extends javax.swing.JInternalFrame {
             }
         });
 
-        lblTotalVenda.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
+        lblTotalVenda.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         lblTotalVenda.setForeground(new java.awt.Color(13, 45, 89));
         lblTotalVenda.setText("TOTAL: R$ 0.00");
 
-        lblTotalVenda1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        lblTotalVenda1.setForeground(new java.awt.Color(13, 45, 89));
-        lblTotalVenda1.setText("PAGAMENTO: À DEFINIR");
+        lblFormaPagamento.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        lblFormaPagamento.setForeground(new java.awt.Color(13, 45, 89));
+        lblFormaPagamento.setText("PAGAMENTO: À DEFINIR");
 
         rbPix.setBackground(new java.awt.Color(255, 255, 255));
         buttonGroup1.add(rbPix);
@@ -223,6 +283,11 @@ public class InternalFrameVenda extends javax.swing.JInternalFrame {
         rbDinheiro.setBackground(new java.awt.Color(255, 255, 255));
         buttonGroup1.add(rbDinheiro);
         rbDinheiro.setText("DINHEIRO");
+        rbDinheiro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rbDinheiroActionPerformed(evt);
+            }
+        });
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(13, 45, 89));
@@ -238,100 +303,127 @@ public class InternalFrameVenda extends javax.swing.JInternalFrame {
             }
         });
 
+        txtTroco.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtTroco.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(13, 45, 89), 2));
+
+        lblTrocoTitle.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblTrocoTitle.setForeground(new java.awt.Color(13, 45, 89));
+        lblTrocoTitle.setText("Cálculo de troco");
+
+        lblTroco.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        lblTroco.setForeground(new java.awt.Color(13, 45, 89));
+        lblTroco.setText("TROCO: R$ 0.00");
+
+        btnCalcTroco.setBackground(new java.awt.Color(13, 45, 89));
+        btnCalcTroco.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnCalcTroco.setForeground(new java.awt.Color(255, 255, 255));
+        btnCalcTroco.setText("Calcular");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGap(78, 78, 78)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 852, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(49, 49, 49)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel6)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btnDeleteItem))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtBarCodeSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 282, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel3)
-                                    .addComponent(txtNomeProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(32, 32, 32)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel4)
-                                    .addComponent(txtEstoqueAtual, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(38, 38, 38)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(txtQtdVenda, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel5)))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(rbPix)
-                                        .addGap(12, 12, 12)
-                                        .addComponent(rbCredito)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(rbDebito)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(rbDinheiro))
-                                    .addComponent(jLabel7))
-                                .addGap(305, 305, 305)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lblTotalVenda1)
-                                    .addComponent(lblTotalVenda, javax.swing.GroupLayout.Alignment.TRAILING)))
+                                .addComponent(rbPix)
+                                .addGap(12, 12, 12)
+                                .addComponent(rbCredito)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(rbDebito)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(rbDinheiro))
+                            .addComponent(jLabel7)
+                            .addComponent(lblTrocoTitle)
                             .addGroup(layout.createSequentialGroup()
+                                .addComponent(txtTroco, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnCalcTroco)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblFormaPagamento)
+                            .addComponent(lblTotalVenda)
+                            .addComponent(lblTroco))
+                        .addGap(97, 97, 97))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(txtBarCodeSearch, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 237, Short.MAX_VALUE))
+                                .addGap(37, 37, 37)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel3)
+                                        .addGap(189, 189, 189))
+                                    .addComponent(txtNomeProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtEstoqueAtual, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel4))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel5)
+                                    .addComponent(txtQtdVenda, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jLabel1)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addGroup(layout.createSequentialGroup()
                                     .addComponent(btnAddItemPedido)
-                                    .addComponent(jLabel1))
-                                .addGap(0, 0, Short.MAX_VALUE)))))
-                .addContainerGap(47, Short.MAX_VALUE))
+                                    .addGap(616, 616, 616))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel6)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(btnDeleteItem))
+                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 773, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addContainerGap(97, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(23, 23, 23)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(23, 23, 23)
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtBarCodeSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(1, 1, 1)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel5)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(42, 42, 42)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel3)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGap(22, 22, 22)
+                                    .addComponent(txtNomeProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(21, 21, 21)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel4)
+                                    .addComponent(jLabel5))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(txtEstoqueAtual, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtQtdVenda, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addComponent(jLabel4)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtNomeProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(7, 7, 7)
+                                    .addComponent(txtQtdVenda, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnAddItemPedido)
-                .addGap(43, 43, 43)
+                .addGap(44, 44, 44)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
                     .addComponent(btnDeleteItem))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(lblTotalVenda)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblTotalVenda1))
+                        .addComponent(lblFormaPagamento)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblTroco))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel7)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -339,8 +431,14 @@ public class InternalFrameVenda extends javax.swing.JInternalFrame {
                             .addComponent(rbPix)
                             .addComponent(rbCredito)
                             .addComponent(rbDebito)
-                            .addComponent(rbDinheiro))))
-                .addContainerGap(69, Short.MAX_VALUE))
+                            .addComponent(rbDinheiro))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(lblTrocoTitle)
+                        .addGap(1, 1, 1)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtTroco, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnCalcTroco))))
+                .addContainerGap(42, Short.MAX_VALUE))
         );
 
         pack();
@@ -383,6 +481,7 @@ public class InternalFrameVenda extends javax.swing.JInternalFrame {
             BigDecimal precoTotal = precoUnit.multiply(qtd);
             
             DefaultTableModel model = (DefaultTableModel) tblVendas.getModel();
+
             model.addRow(new Object[] {
                 produtoAtual.getCodigoBarras(),
                 produtoAtual.getNome(),
@@ -408,7 +507,6 @@ public class InternalFrameVenda extends javax.swing.JInternalFrame {
     private void atualizarTotalVenda() {
         DefaultTableModel model = (DefaultTableModel) tblVendas.getModel();
         BigDecimal total = BigDecimal.ZERO;
-        
         for(int i = 0; i < model.getRowCount(); i++) {
             Object precoTotalObj = model.getValueAt(i, 4);
             
@@ -443,9 +541,13 @@ public class InternalFrameVenda extends javax.swing.JInternalFrame {
         atualizarTotalVenda();
     }//GEN-LAST:event_btnDeleteItemActionPerformed
 
+    private void rbDinheiroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbDinheiroActionPerformed
+    }//GEN-LAST:event_rbDinheiroActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddItemPedido;
+    private javax.swing.JButton btnCalcTroco;
     private javax.swing.JButton btnDeleteItem;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JLabel jLabel1;
@@ -457,8 +559,10 @@ public class InternalFrameVenda extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JRadioButton jRadioButton5;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel lblFormaPagamento;
     private javax.swing.JLabel lblTotalVenda;
-    private javax.swing.JLabel lblTotalVenda1;
+    private javax.swing.JLabel lblTroco;
+    private javax.swing.JLabel lblTrocoTitle;
     private javax.swing.JRadioButton rbCredito;
     private javax.swing.JRadioButton rbDebito;
     private javax.swing.JRadioButton rbDinheiro;
@@ -468,5 +572,6 @@ public class InternalFrameVenda extends javax.swing.JInternalFrame {
     private javax.swing.JTextField txtEstoqueAtual;
     private javax.swing.JTextField txtNomeProduto;
     private javax.swing.JTextField txtQtdVenda;
+    private javax.swing.JTextField txtTroco;
     // End of variables declaration//GEN-END:variables
 }
