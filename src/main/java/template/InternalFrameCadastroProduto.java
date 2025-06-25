@@ -1,9 +1,14 @@
 package template;
 
+import com.google.zxing.WriterException;
 import dao.ProdutoDAO;
+import java.awt.HeadlessException;
+import java.awt.image.BufferedImage;
 import java.math.BigDecimal;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import model.ProdutoModel;
+import util.GeradorCodBarras;
 import util.Validator;
 
 /**
@@ -19,6 +24,16 @@ public class InternalFrameCadastroProduto extends javax.swing.JInternalFrame {
         initComponents();
         txtCodigoBarras.setText(ProdutoModel.generateBarCodeEAN13());
         
+        BufferedImage imagemCodigo;
+        try {
+            imagemCodigo = GeradorCodBarras.gerarCodigoBarrasEAN13(txtCodigoBarras.getText());
+            lblBarcode.setIcon(new ImageIcon(imagemCodigo));
+            lblBarcode.setText(""); // remove o texto padrão
+        } catch (WriterException e) {
+            lblBarcode.setText("Erro ao gerar código.");
+            e.printStackTrace();
+        }
+            
         Validator validator = new Validator();
         
         txtEstoque.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -55,6 +70,7 @@ public class InternalFrameCadastroProduto extends javax.swing.JInternalFrame {
         btnSubmit = new javax.swing.JButton();
         lblAviso = new javax.swing.JLabel();
         lblAviso1 = new javax.swing.JLabel();
+        lblBarcode = new javax.swing.JLabel();
 
         jLabel7.setText("jLabel7");
 
@@ -139,45 +155,50 @@ public class InternalFrameCadastroProduto extends javax.swing.JInternalFrame {
         lblAviso1.setForeground(new java.awt.Color(13, 45, 89));
         lblAviso1.setText("Cadastrar o preço com . (Ex: 100.99)");
 
+        lblBarcode.setText("jLabel1");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(245, 245, 245)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(txtCodigoBarras, javax.swing.GroupLayout.PREFERRED_SIZE, 426, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(lblNomeProduto)
+                        .addComponent(txtNomeProduto, javax.swing.GroupLayout.DEFAULT_SIZE, 426, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblCodigoBarras)
+                            .addComponent(lblAviso, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addComponent(txtEstoque)
+                        .addComponent(lblEstoque, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblAviso1)
                         .addGroup(layout.createSequentialGroup()
-                            .addGap(340, 340, 340)
-                            .addComponent(lblTitulo))
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(245, 245, 245)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(lblAviso1)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 164, Short.MAX_VALUE)
-                                        .addComponent(btnSubmit, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(lblNomeProduto)
-                                    .addComponent(txtNomeProduto)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(lblCodigoBarras)
-                                        .addComponent(lblAviso, javax.swing.GroupLayout.Alignment.TRAILING))
-                                    .addComponent(txtEstoque)
-                                    .addComponent(lblCategoria)
-                                    .addComponent(cbxCategoria, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(lblEstoque, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(lblPreco, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtPreco))))))
+                            .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 164, Short.MAX_VALUE)
+                            .addComponent(btnSubmit, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(lblCategoria)
+                        .addComponent(cbxCategoria, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(lblPreco, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtPreco)))
                 .addGap(0, 277, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(321, 321, 321)
+                        .addComponent(lblTitulo))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(334, 334, 334)
+                        .addComponent(lblBarcode, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(29, 29, 29)
+                .addGap(30, 30, 30)
                 .addComponent(lblTitulo)
-                .addGap(42, 42, 42)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblNomeProduto)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtNomeProduto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -191,7 +212,9 @@ public class InternalFrameCadastroProduto extends javax.swing.JInternalFrame {
                 .addComponent(txtCodigoBarras, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblAviso)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(lblBarcode, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
                 .addComponent(lblCategoria)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(cbxCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -205,7 +228,7 @@ public class InternalFrameCadastroProduto extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnSubmit, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(126, Short.MAX_VALUE))
+                .addGap(109, 109, 109))
         );
 
         pack();
@@ -247,7 +270,7 @@ public class InternalFrameCadastroProduto extends javax.swing.JInternalFrame {
 
             JOptionPane.showMessageDialog(this, "Produto cadastrado com sucesso!");
             this.dispose();
-       } catch (Exception e) {
+       } catch (HeadlessException | NumberFormatException e) {
            e.printStackTrace();
            JOptionPane.showMessageDialog(this, "Erro ao cadastrar produto: " + e.getMessage());
        }
@@ -262,6 +285,7 @@ public class InternalFrameCadastroProduto extends javax.swing.JInternalFrame {
     private javax.swing.JTextField jTextField6;
     private javax.swing.JLabel lblAviso;
     private javax.swing.JLabel lblAviso1;
+    private javax.swing.JLabel lblBarcode;
     private javax.swing.JLabel lblCategoria;
     private javax.swing.JLabel lblCodigoBarras;
     private javax.swing.JLabel lblEstoque;

@@ -8,6 +8,8 @@ import java.awt.Color;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
+import javax.swing.JDesktopPane;
+import javax.swing.JInternalFrame;
 
 /**
  *
@@ -28,6 +30,15 @@ public class TelaInicial extends javax.swing.JFrame {
         startClock();
     }
 
+    public static void abrirFrame(JInternalFrame novoFrame, JDesktopPane desktop) {
+        // Fecha todos os frames abertos
+        for (JInternalFrame frame : desktop.getAllFrames()) {
+            frame.dispose();
+        }
+
+        desktop.add(novoFrame);
+        novoFrame.setVisible(true);
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -161,11 +172,12 @@ public class TelaInicial extends javax.swing.JFrame {
                 .addComponent(btnEstoque)
                 .addGap(19, 19, 19)
                 .addComponent(btnRelatorios)
-                .addContainerGap(364, Short.MAX_VALUE))
+                .addContainerGap(380, Short.MAX_VALUE))
         );
 
         dpPrincipal.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         dpPrincipal.setPreferredSize(new java.awt.Dimension(960, 733));
+        dpPrincipal.setVerifyInputWhenFocusTarget(false);
 
         javax.swing.GroupLayout dpPrincipalLayout = new javax.swing.GroupLayout(dpPrincipal);
         dpPrincipal.setLayout(dpPrincipalLayout);
@@ -205,14 +217,12 @@ public class TelaInicial extends javax.swing.JFrame {
 
     private void btnProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProdutosActionPerformed
         InternalFrameProduto tela = new InternalFrameProduto(dpPrincipal);
-        dpPrincipal.add(tela);
-        tela.setVisible(true);
+        abrirFrame(tela, dpPrincipal);
     }//GEN-LAST:event_btnProdutosActionPerformed
 
     private void btnVendasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVendasActionPerformed
         InternalFrameVenda tela = new InternalFrameVenda(dpPrincipal);
-        dpPrincipal.add(tela);
-        tela.setVisible(true);
+        abrirFrame(tela, dpPrincipal);
     }//GEN-LAST:event_btnVendasActionPerformed
 
     private void btnProdutosMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnProdutosMouseEntered

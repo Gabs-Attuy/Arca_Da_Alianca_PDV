@@ -31,7 +31,7 @@ public class ProdutoModel {
     
     public static String generateBarCodeEAN13() {
         long timestamp = System.currentTimeMillis();
-        return String.valueOf(timestamp).substring(0, 13);
+        return String.valueOf(timestamp).substring(0, 12);
     }
 
     public UUID getUuid() {
