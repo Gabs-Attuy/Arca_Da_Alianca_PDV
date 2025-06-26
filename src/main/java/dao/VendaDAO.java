@@ -90,38 +90,57 @@ public class VendaDAO extends AbstractDAO<VendaModel, UUID> {
         }
     }
     
-    public void saveWithItems(VendaModel venda, List<ItemPedidoModel> itens) {
-        String vendaSql = "INSERT INTO " + getTableName() + " (data_venda, total_venda, forma_pagamento) VALUES (?, ?, ?)";
-        String itemSql = "INSERT INTO tb_item_pedido (pedido_id, produto_id, quantidade) VALUES (?, ?, ?)";
+    public boolean saveWithItems(VendaModel venda, List<ItemPedidoModel> itens) {
+        String sqlVenda = "INSERT INTO " + getTableName() + " (data_venda, valor_total, forma_pagamento) VALUES (?, ?, ?::forma_pagamento_enum) RETURNING id";
+        String sqlItem = "INSERT INTO item_pedido (venda_id, produto_id, quantidade) VALUES (?, ?, ?)";
+        String sqlUpdateEstoque = "UPDATE tb_produto SET estoque = estoque - ? WHERE uuid = ?";
 
         try (Connection conn = UtilsDB.getConnection()) {
             conn.setAutoCommit(false);
 
-            try (PreparedStatement vendaStmt = conn.prepareStatement(vendaSql);
-                 PreparedStatement itemStmt = conn.prepareStatement(itemSql)) {
+            try (PreparedStatement stmtVenda = conn.prepareStatement(sqlVenda);
+                 PreparedStatement stmtItem = conn.prepareStatement(sqlItem);
+                 PreparedStatement stmtEstoque = conn.prepareStatement(sqlUpdateEstoque)) {
+                
+                UUID uuidVenda = null;
+                
+                stmtVenda.setTimestamp(1, new java.sql.Timestamp(venda.getDataVenda().getTime()));
+                stmtVenda.setBigDecimal(2, venda.getTotalVenda());
+                stmtVenda.setObject(3, venda.getFormaPagamento().name(), java.sql.Types.OTHER);
+                ResultSet rs = stmtVenda.executeQuery();
+                if (rs.next()) {
+                    uuidVenda = (UUID) rs.getObject("id");
+                }
+                
+                if(uuidVenda != null) {
+                    for (ItemPedidoModel item : itens) {
+                        
+                        stmtItem.setObject(1, uuidVenda);
+                        stmtItem.setObject(2, item.getProdutoId());
+                        stmtItem.setInt(3, item.getQuantidade());
+                        stmtItem.executeUpdate();
 
-                vendaStmt.setTimestamp(1, new Timestamp(venda.getDataVenda().getTime()));
-                vendaStmt.setBigDecimal(2, venda.getTotalVenda());
-                vendaStmt.setString(3, venda.getFormaPagamento().name());
-                vendaStmt.executeUpdate();
-
-                for (ItemPedidoModel item : itens) {
-                    itemStmt.setObject(1, venda.getUuid());
-                    itemStmt.setObject(2, item.getProdutoId());
-                    itemStmt.setInt(3, item.getQuantidade());
-                    itemStmt.addBatch();
+                        stmtEstoque.setInt(1, item.getQuantidade());
+                        stmtEstoque.setObject(2, item.getProdutoId());
+                        stmtEstoque.executeUpdate();
+                    }
                 }
 
-                itemStmt.executeBatch();
                 conn.commit();
+                return true;
 
-            } catch (SQLException e) {
+            } catch (SQLException ex) {
                 conn.rollback();
-                throw e;
+                ex.printStackTrace();
+                return false;
             }
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
+            return false;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return false;
         }
     }
     
