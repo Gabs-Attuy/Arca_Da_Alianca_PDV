@@ -24,6 +24,7 @@ public class InternalFrameVenda extends javax.swing.JInternalFrame {
 
     /**
      * Creates new form InternalFrameVenda
+     * @param desktop
      */
     public InternalFrameVenda(JDesktopPane desktop) {
         initComponents();

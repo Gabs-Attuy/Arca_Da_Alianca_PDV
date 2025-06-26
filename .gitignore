@@ -32,4 +32,4 @@ Thumbs.db
 
 # Personal config files
 config.properties
-dbconfig.properties
+aws-credentials.properties
