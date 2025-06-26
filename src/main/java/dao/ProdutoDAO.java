@@ -45,8 +45,8 @@ public class ProdutoDAO extends AbstractDAO<ProdutoModel, UUID>{
     public void save(ProdutoModel p) {
         String sql = "INSERT INTO " + getTableName() + " (nome, categoria, preco, estoque, codigo_barras) VALUES (?, ?, ?, ?, ?)";
 
-        try (Connection connection = UtilsDB.getConnection();
-             PreparedStatement stmt = connection.prepareStatement(sql)) {
+        try (Connection conn = UtilsDB.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, p.getNome());
             stmt.setString(2, p.getCategoria());
             stmt.setBigDecimal(3, p.getPreco());
@@ -78,8 +78,8 @@ public class ProdutoDAO extends AbstractDAO<ProdutoModel, UUID>{
     public void update(ProdutoModel p) {
         String sql = "UPDATE " + getTableName() + " SET nome = ?, categoria = ?, preco = ?, estoque = ?, codigo_barras = ? WHERE " + getIdColumn() + " = ?";
 
-        try (Connection connection = UtilsDB.getConnection();
-             PreparedStatement stmt = connection.prepareStatement(sql)) {
+        try (Connection conn = UtilsDB.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, p.getNome());
             stmt.setString(2, p.getCategoria());
             stmt.setBigDecimal(3, p.getPreco());
