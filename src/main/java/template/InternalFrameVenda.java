@@ -1,21 +1,28 @@
 package template;
 
 import dao.ProdutoDAO;
+import dao.VendaDAO;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.Date;
+import java.util.Locale;
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 import javax.swing.JDesktopPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import model.ItemPedidoModel;
 import model.ProdutoModel;
+import model.VendaModel;
+import util.SnsService;
 /**
  *
  * @author jeff_
+ * @author gabs
  */
 public class InternalFrameVenda extends javax.swing.JInternalFrame {
 
@@ -80,7 +87,9 @@ public class InternalFrameVenda extends javax.swing.JInternalFrame {
                 } catch (NumberFormatException ex) {
                     javax.swing.JOptionPane.showMessageDialog(this, "O valor de troco inserido é inválido!");
                 }
-            });
+        });
+        
+        btnFinalizarVenda.addActionListener(e -> finalizarVenda());
     }
         
     private String getSelectedButtonText(ButtonGroup group) {
@@ -106,23 +115,97 @@ public class InternalFrameVenda extends javax.swing.JInternalFrame {
     }
     
     public void setTableDesign(JTable table) {
-        // Centraliza cabeçalhos
+        
         ((javax.swing.table.DefaultTableCellRenderer) table.getTableHeader().getDefaultRenderer())
         .setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         
-        // Centraliza valores
         javax.swing.table.DefaultTableCellRenderer centerRenderer = new javax.swing.table.DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        table.getColumnModel().getColumn(0).setCellRenderer(centerRenderer); // Código
-        table.getColumnModel().getColumn(2).setCellRenderer(centerRenderer); // Preço
-        table.getColumnModel().getColumn(3).setCellRenderer(centerRenderer); // Quantidade
-        table.getColumnModel().getColumn(4).setCellRenderer(centerRenderer); // Preço Total
+        table.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
+        table.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
+        table.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
+        table.getColumnModel().getColumn(4).setCellRenderer(centerRenderer);
         
         table.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 14));
         table.getTableHeader().setBackground(new Color(13, 45, 89));
         table.getTableHeader().setForeground(Color.WHITE);
     }
+    
+    private void finalizarVenda() {
+        DefaultTableModel model = (DefaultTableModel) tblVendas.getModel();
 
+        if (model.getRowCount() == 0) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Adicione itens à venda antes de finalizar.");
+            return;
+        }
+
+        String formaSelecionada = getSelectedButtonText(buttonGroup1);
+        if (formaSelecionada == null) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Selecione uma forma de pagamento.");
+            return;
+        }
+
+        try {
+            VendaModel venda = new VendaModel();
+            venda.setDataVenda(new Date());
+            venda.setTotalVenda(parseTotalVenda());
+            venda.setFormaPagamento(enums.FormaPagamento.valueOf(formaSelecionada.toUpperCase().replace("É", "E")));
+
+            java.util.List<ItemPedidoModel> itens = new java.util.ArrayList<>();
+            for (int i = 0; i < model.getRowCount(); i++) {
+                String codigo = (String) model.getValueAt(i, 0);
+                int qtd = ((BigDecimal) model.getValueAt(i, 3)).intValue();
+
+                ProdutoDAO pdao = new ProdutoDAO();
+                ProdutoModel produto = pdao.findByCodigoBarras(codigo);
+
+                ItemPedidoModel item = new ItemPedidoModel(null, produto.getUuid(), qtd);
+                itens.add(item);
+            }
+
+            VendaDAO vdao = new VendaDAO();
+            boolean sucesso = vdao.saveWithItems(venda, itens);
+
+            if (sucesso) {
+                javax.swing.JOptionPane.showMessageDialog(this, "Venda finalizada com sucesso!");
+
+                try {
+                    SnsService snsService = new SnsService();
+                    java.text.SimpleDateFormat formatoData = new java.text.SimpleDateFormat("EEEE, dd/MM/yyyy 'às' HH:mm", new Locale("pt", "BR"));
+                    String dataFormatada = formatoData.format(venda.getDataVenda());
+
+                    String msg = String.format(
+                        "Nova venda realizada!\nValor: R$ %.2f\nData: %s",
+                        venda.getTotalVenda(),
+                        dataFormatada
+                    );
+
+                    snsService.enviarMensagem(msg);
+
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+
+                model.setRowCount(0);
+                lblTotalVenda.setText("TOTAL: R$ 0.00");
+                lblFormaPagamento.setText("PAGAMENTO: À DEFINIR");
+                lblTroco.setText("TROCO: R$ 0.00");
+                txtTroco.setText("");
+            } else {
+                javax.swing.JOptionPane.showMessageDialog(this, "Erro ao finalizar venda.");
+            }
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            javax.swing.JOptionPane.showMessageDialog(this, "Erro ao finalizar venda.");
+        }
+    }
+    
+    private BigDecimal parseTotalVenda() {
+        String totalStr = lblTotalVenda.getText().replace("TOTAL: R$", "").trim().replace(",", ".");
+        return new BigDecimal(totalStr);
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -159,7 +242,7 @@ public class InternalFrameVenda extends javax.swing.JInternalFrame {
         lblTrocoTitle = new javax.swing.JLabel();
         lblTroco = new javax.swing.JLabel();
         btnCalcTroco = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        btnFinalizarVenda = new javax.swing.JButton();
 
         jRadioButton5.setText("jRadioButton5");
 
@@ -199,7 +282,7 @@ public class InternalFrameVenda extends javax.swing.JInternalFrame {
             }
         });
         tblVendas.setCellSelectionEnabled(true);
-        tblVendas.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        tblVendas.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         tblVendas.setGridColor(new java.awt.Color(204, 204, 204));
         tblVendas.setSelectionBackground(new java.awt.Color(13, 45, 89));
         tblVendas.setSelectionForeground(new java.awt.Color(255, 255, 255));
@@ -321,10 +404,10 @@ public class InternalFrameVenda extends javax.swing.JInternalFrame {
         btnCalcTroco.setForeground(new java.awt.Color(255, 255, 255));
         btnCalcTroco.setText("Calcular");
 
-        jButton1.setBackground(new java.awt.Color(13, 45, 89));
-        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setText("Finalizar");
+        btnFinalizarVenda.setBackground(new java.awt.Color(13, 45, 89));
+        btnFinalizarVenda.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnFinalizarVenda.setForeground(new java.awt.Color(255, 255, 255));
+        btnFinalizarVenda.setText("Finalizar");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -369,7 +452,7 @@ public class InternalFrameVenda extends javax.swing.JInternalFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(btnFinalizarVenda, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
@@ -437,7 +520,7 @@ public class InternalFrameVenda extends javax.swing.JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblTroco)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton1))
+                        .addComponent(btnFinalizarVenda))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel7)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -563,8 +646,8 @@ public class InternalFrameVenda extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnAddItemPedido;
     private javax.swing.JButton btnCalcTroco;
     private javax.swing.JButton btnDeleteItem;
+    private javax.swing.JButton btnFinalizarVenda;
     private javax.swing.ButtonGroup buttonGroup1;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
