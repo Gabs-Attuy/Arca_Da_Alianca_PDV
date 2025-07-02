@@ -6,6 +6,7 @@ package dao;
 
 import enums.FormaPagamento;
 import interfaces.AbstractDAO;
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -70,6 +71,40 @@ public class VendaDAO extends AbstractDAO<VendaModel, UUID> {
         throw new UnsupportedOperationException("Não é possível atualizar uma venda.");
     }
     
+    public BigDecimal sumVendas() {
+        String sql = "SELECT SUM(valor_total) FROM tb_venda WHERE data_venda >= CURRENT_DATE - INTERVAL '30 days'";
+    
+        try (Connection conn = UtilsDB.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            if (rs.next()) {
+                return rs.getBigDecimal(1) != null ? rs.getBigDecimal(1) : BigDecimal.ZERO;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return BigDecimal.ZERO;
+    }
+    
+    public int countVendas() {
+        String sql = "SELECT COUNT(*) FROM tb_venda WHERE data_venda >= CURRENT_DATE - INTERVAL '30 days'";
+        
+        try (Connection conn = UtilsDB.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql);
+                ResultSet rs = stmt.executeQuery()) {
+            
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+    
     public void saveItems(UUID vendaId, List<ItemPedidoModel> itens) {
         String sql = "INSERT INTO tb_item_pedido (pedido_id, produto_id, quantidade) VALUES (?, ?, ?)";
 
@@ -91,7 +126,7 @@ public class VendaDAO extends AbstractDAO<VendaModel, UUID> {
     }
     
     public boolean saveWithItems(VendaModel venda, List<ItemPedidoModel> itens) {
-        String sqlVenda = "INSERT INTO " + getTableName() + " (data_venda, valor_total, forma_pagamento) VALUES (?, ?, ?::forma_pagamento_enum) RETURNING id";
+        String sqlVenda = "INSERT INTO " + getTableName() + " (data_venda, valor_total, forma_pagamento) VALUES (?, ?, ?::forma_pagamento_enum) RETURNING uuid";
         String sqlItem = "INSERT INTO item_pedido (venda_id, produto_id, quantidade) VALUES (?, ?, ?)";
         String sqlUpdateEstoque = "UPDATE tb_produto SET estoque = estoque - ? WHERE uuid = ?";
 
@@ -109,7 +144,7 @@ public class VendaDAO extends AbstractDAO<VendaModel, UUID> {
                 stmtVenda.setObject(3, venda.getFormaPagamento().name(), java.sql.Types.OTHER);
                 ResultSet rs = stmtVenda.executeQuery();
                 if (rs.next()) {
-                    uuidVenda = (UUID) rs.getObject("id");
+                    uuidVenda = (UUID) rs.getObject("uuid");
                 }
                 
                 if(uuidVenda != null) {
