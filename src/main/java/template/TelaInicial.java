@@ -114,6 +114,11 @@ public class TelaInicial extends javax.swing.JFrame {
                 btnRelatoriosMouseExited(evt);
             }
         });
+        btnRelatorios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRelatoriosActionPerformed(evt);
+            }
+        });
 
         btnVendas.setBackground(new java.awt.Color(13, 45, 89));
         btnVendas.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
@@ -213,7 +218,7 @@ public class TelaInicial extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnEstoqueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEstoqueActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_btnEstoqueActionPerformed
 
     private void btnProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProdutosActionPerformed
@@ -265,6 +270,11 @@ public class TelaInicial extends javax.swing.JFrame {
         btnRelatorios.setBackground(new Color(13, 45, 89));
         btnRelatorios.setForeground(Color.WHITE);
     }//GEN-LAST:event_btnRelatoriosMouseExited
+
+    private void btnRelatoriosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRelatoriosActionPerformed
+        InternalFrameRelatorio tela = new InternalFrameRelatorio(dpPrincipal);
+        abrirFrame(tela, dpPrincipal);
+    }//GEN-LAST:event_btnRelatoriosActionPerformed
 
     /**
      * @param args the command line arguments
