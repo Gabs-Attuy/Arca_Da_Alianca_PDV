@@ -5,8 +5,15 @@
 package template;
 
 import dao.VendaDAO;
+import java.awt.Color;
+import java.awt.Font;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+import java.util.List;
 import javax.swing.JDesktopPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import model.VendaModel;
 
 /**
  *
@@ -24,13 +31,54 @@ public class InternalFrameRelatorio extends javax.swing.JInternalFrame {
         this.desktop = desktop;
         
         VendaDAO dao = new VendaDAO();
-        
         lblQtdVendas.setText(String.valueOf(dao.countVendas()));
         
         BigDecimal totalEmVendas = dao.sumVendas(); 
         String valorFormatado = java.text.NumberFormat.getCurrencyInstance(new java.util.Locale("pt","BR")).format(totalEmVendas);
         
         lblTotalVendas.setText(valorFormatado);
+        
+        loadVendasTable();
+   }
+    
+    public void loadVendasTable() {
+        
+        VendaDAO dao = new VendaDAO();
+        List<VendaModel> vendas = dao.listVendasDesc();
+        
+        DefaultTableModel table = new DefaultTableModel();
+        table.addColumn("Data da venda");
+        table.addColumn("Preço total");
+        table.addColumn("Forma de pagamento");
+        
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+
+        for (VendaModel v : vendas) {
+            table.addRow(new Object[]{
+                sdf.format(v.getDataVenda()),
+                "R$ " + String.format("%.2f", v.getTotalVenda()),
+                v.getFormaPagamento(),
+            });
+        }
+        tblVendas.setModel(table);
+        setTableDesign(tblVendas);
+
+    }
+    
+    public void setTableDesign(JTable table) {
+        
+        ((javax.swing.table.DefaultTableCellRenderer) table.getTableHeader().getDefaultRenderer())
+        .setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        
+        javax.swing.table.DefaultTableCellRenderer centerRenderer = new javax.swing.table.DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        table.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
+        table.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
+        table.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
+        
+        table.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 14));
+        table.getTableHeader().setBackground(new Color(13, 45, 89));
+        table.getTableHeader().setForeground(Color.WHITE);
     }
 
     /**
@@ -47,6 +95,9 @@ public class InternalFrameRelatorio extends javax.swing.JInternalFrame {
         lblTitleQtdVendas = new javax.swing.JLabel();
         lblQtdVendas = new javax.swing.JLabel();
         lblTotalVendas = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tblVendas = new javax.swing.JTable();
+        btnGerarRelatorio = new javax.swing.JButton();
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(13, 45, 89));
@@ -62,64 +113,118 @@ public class InternalFrameRelatorio extends javax.swing.JInternalFrame {
 
         lblQtdVendas.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         lblQtdVendas.setForeground(new java.awt.Color(13, 45, 89));
-        lblQtdVendas.setText("jLabel4");
+        lblQtdVendas.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblQtdVendas.setText("totalVendas");
+        lblQtdVendas.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
         lblTotalVendas.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         lblTotalVendas.setForeground(new java.awt.Color(13, 45, 89));
-        lblTotalVendas.setText("jLabel4");
+        lblTotalVendas.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblTotalVendas.setText("totalEmVendas");
+        lblTotalVendas.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+
+        tblVendas.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        tblVendas.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Data da venda", "Preço total", "Forma de pagamento"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.Double.class, java.lang.String.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        tblVendas.setCellSelectionEnabled(true);
+        tblVendas.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        tblVendas.setGridColor(new java.awt.Color(204, 204, 204));
+        tblVendas.setSelectionBackground(new java.awt.Color(13, 45, 89));
+        tblVendas.setSelectionForeground(new java.awt.Color(255, 255, 255));
+        tblVendas.getTableHeader().setResizingAllowed(false);
+        jScrollPane2.setViewportView(tblVendas);
+
+        btnGerarRelatorio.setBackground(new java.awt.Color(13, 45, 89));
+        btnGerarRelatorio.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnGerarRelatorio.setForeground(new java.awt.Color(255, 255, 255));
+        btnGerarRelatorio.setText("Gerar relatório");
+        btnGerarRelatorio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGerarRelatorioActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(90, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnGerarRelatorio, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 760, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(98, 98, 98))
             .addGroup(layout.createSequentialGroup()
                 .addGap(80, 80, 80)
-                .addComponent(jLabel1)
-                .addGap(268, 748, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(lblTitleVendas)
-                .addGap(123, 123, 123))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(169, 169, 169)
-                .addComponent(lblQtdVendas)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(lblTotalVendas)
-                .addGap(262, 262, 262))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(90, 90, 90)
-                    .addComponent(lblTitleQtdVendas)
-                    .addContainerGap(636, Short.MAX_VALUE)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblTitleQtdVendas)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(55, 55, 55)
+                                .addComponent(lblQtdVendas)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(lblTitleVendas)
+                                .addGap(111, 111, 111))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(lblTotalVendas, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(155, 155, 155))))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(39, 39, 39)
                 .addComponent(jLabel1)
-                .addGap(57, 57, 57)
-                .addComponent(lblTitleVendas)
+                .addGap(32, 32, 32)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblTitleQtdVendas)
+                    .addComponent(lblTitleVendas))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblQtdVendas)
                     .addComponent(lblTotalVendas))
-                .addContainerGap(494, Short.MAX_VALUE))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(129, 129, 129)
-                    .addComponent(lblTitleQtdVendas)
-                    .addContainerGap(543, Short.MAX_VALUE)))
+                .addGap(93, 93, 93)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(74, 74, 74)
+                .addComponent(btnGerarRelatorio, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(103, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnGerarRelatorioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGerarRelatorioActionPerformed
+  
+    }//GEN-LAST:event_btnGerarRelatorioActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnGerarRelatorio;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lblQtdVendas;
     private javax.swing.JLabel lblTitleQtdVendas;
     private javax.swing.JLabel lblTitleVendas;
     private javax.swing.JLabel lblTotalVendas;
+    private javax.swing.JTable tblVendas;
     // End of variables declaration//GEN-END:variables
 }
