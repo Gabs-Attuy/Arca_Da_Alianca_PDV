@@ -12,6 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import model.ItemPedidoModel;
@@ -29,7 +30,7 @@ public class VendaDAO extends AbstractDAO<VendaModel, UUID> {
         VendaModel venda = new VendaModel();
         venda.setUuid((UUID) rs.getObject("uuid"));
         venda.setDataVenda(rs.getTimestamp("data_venda"));
-        venda.setTotalVenda(rs.getBigDecimal("total_venda"));
+        venda.setTotalVenda(rs.getBigDecimal("valor_total"));
         venda.setFormaPagamento(FormaPagamento.valueOf(rs.getString("forma_pagamento")));
         
         return venda;
@@ -104,6 +105,27 @@ public class VendaDAO extends AbstractDAO<VendaModel, UUID> {
         }
         return 0;
     }
+    
+    public List<VendaModel> listVendasDesc() {
+        String sql = "SELECT * FROM tb_venda ORDER BY data_venda DESC" ;
+        
+        List<VendaModel> vendas = new ArrayList<>();
+        
+        try (Connection conn = UtilsDB.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql);
+                ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                VendaModel venda = mapResultSetToEntity(rs);
+                vendas.add(venda);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return vendas;
+    }
+    
     
     public void saveItems(UUID vendaId, List<ItemPedidoModel> itens) {
         String sql = "INSERT INTO tb_item_pedido (pedido_id, produto_id, quantidade) VALUES (?, ?, ?)";
