@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports 
+                                  http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
+              name="RelatorioVendasPorData"
+              pageWidth="595" pageHeight="842" columnWidth="555"
+              leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20"
+              uuid="f934ab77-f103-4d2a-b0be-abc123456789">
+
+    <!-- Parâmetros -->
+    <parameter name="dataInicio" class="java.util.Date"/>
+    <parameter name="dataFim" class="java.util.Date"/>
+
+    <!-- Campos -->
+    <field name="dataVenda" class="java.util.Date"/>
+    <field name="itemNome" class="java.lang.String"/>
+    <field name="quantidade" class="java.lang.Integer"/>
+    <field name="precoUnitario" class="java.math.BigDecimal"/>
+
+    <!-- Variável -->
+    <variable name="TotalPorDia" class="java.math.BigDecimal" calculation="Sum" resetType="Group" resetGroup="DataVendaGroup">
+        <variableExpression><![CDATA[$F{precoUnitario}.multiply(new java.math.BigDecimal($F{quantidade}))]]></variableExpression>
+    </variable>
+
+    <!-- Grupo -->
+    <group name="DataVendaGroup">
+        <groupExpression><![CDATA[$F{dataVenda}]]></groupExpression>
+
+        <groupHeader>
+            <band height="30">
+                <textField>
+                    <reportElement x="0" y="5" width="400" height="20" backcolor="#E0E0E0" mode="Opaque"/>
+                    <textElement>
+                        <font isBold="true"/>
+                    </textElement>
+                    <textFieldExpression><![CDATA["Vendas do dia: " + new java.text.SimpleDateFormat("dd/MM/yyyy").format($F{dataVenda})]]></textFieldExpression>
+                </textField>
+            </band>
+        </groupHeader>
+
+        <groupFooter>
+            <band height="25">
+                <textField pattern="R$ #,##0.00">
+                    <reportElement x="300" y="5" width="200" height="20" backcolor="#F0F0F0" mode="Opaque"/>
+                    <textElement>
+                        <font isBold="true"/>
+                    </textElement>
+                    <textFieldExpression><![CDATA["Total do dia: R$ " + $V{TotalPorDia}]]></textFieldExpression>
+                </textField>
+            </band>
+        </groupFooter>
+    </group>
+
+    <!-- Título -->
+    <title>
+        <band height="200">
+          <!-- Centralizar imagem -->
+          <image>
+            <reportElement x="210" y="0" width="300" height="120" />
+            <imageExpression><![CDATA["src/main/resources/livraria_logo.png"]]></imageExpression>
+          </image>
+
+          <!-- Endereço da loja -->
+          <staticText>
+            <reportElement x="0" y="130" width="555" height="15" />
+            <textElement textAlignment="Center" verticalAlignment="Middle">
+                
+            </textElement>
+            <text><![CDATA[Livraria Arca da Aliança - R. Forte de Vila Bela, 62 - Jardim Iporã]]></text>
+          </staticText>
+
+          <!-- Telefone da loja -->
+          <staticText>
+            <reportElement x="0" y="150" width="555" height="15" />
+            <textElement textAlignment="Center" verticalAlignment="Middle">
+              
+            </textElement>
+            <text><![CDATA[Telefone: (11) 94197-9794 | Email: livrariaarcadaalianca@gmail.com]]></text>
+          </staticText>
+        </band>
+    </title>
+
+
+
+    <!-- Cabeçalho da tabela -->
+    <columnHeader>
+        <band height="20">
+            <staticText>
+                <reportElement x="0" y="0" width="250" height="20" backcolor="#CCCCCC" mode="Opaque"/>
+                <text><![CDATA[Item]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="250" y="0" width="100" height="20" backcolor="#CCCCCC" mode="Opaque"/>
+                <text><![CDATA[Quantidade]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="350" y="0" width="150" height="20" backcolor="#CCCCCC" mode="Opaque"/>
+                <text><![CDATA[Valor Total do Item]]></text>
+            </staticText>
+        </band>
+    </columnHeader>
+
+    <!-- Detalhes -->
+    <detail>
+        <band height="20">
+            <textField>
+                <reportElement x="0" y="0" width="250" height="20"/>
+                <textFieldExpression><![CDATA[$F{itemNome}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="250" y="0" width="100" height="20"/>
+                <textFieldExpression><![CDATA[$F{quantidade} + " un"]]></textFieldExpression>
+            </textField>
+            <textField pattern="R$ #,##0.00">
+                <reportElement x="350" y="0" width="150" height="20"/>
+                <textFieldExpression><![CDATA[$F{precoUnitario}.multiply(new java.math.BigDecimal($F{quantidade}))]]></textFieldExpression>
+            </textField>
+        </band>
+    </detail>
+
+</jasperReport>
