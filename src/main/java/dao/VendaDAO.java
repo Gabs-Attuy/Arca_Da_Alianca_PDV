@@ -17,6 +17,8 @@ import java.util.List;
 import java.util.UUID;
 import model.ItemPedidoModel;
 import model.VendaModel;
+import dto.ItemVendaDTO;
+import java.util.Date;
 import util.UtilsDB;
 
 /**
@@ -201,4 +203,45 @@ public class VendaDAO extends AbstractDAO<VendaModel, UUID> {
         }
     }
     
+    public List<ItemVendaDTO> buscarRelatorioVendasPorPeriodo(Date dataInicio, Date dataFim) {
+        List<ItemVendaDTO> lista = new ArrayList<>();
+
+        String sql = """
+            SELECT 
+                v.data_venda,
+                p.nome AS item_nome,
+                ip.quantidade,
+                p.preco AS preco_unitario
+            FROM tb_venda v
+            INNER JOIN item_pedido ip ON v.uuid = ip.venda_id
+            INNER JOIN tb_produto p ON ip.produto_id = p.uuid
+            WHERE v.data_venda BETWEEN ? AND ?
+            ORDER BY v.data_venda ASC
+        """;
+
+        try (Connection conn = UtilsDB.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setTimestamp(1, new java.sql.Timestamp(dataInicio.getTime()));
+            stmt.setTimestamp(2, new java.sql.Timestamp(dataFim.getTime()));
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    ItemVendaDTO dto = new ItemVendaDTO();
+
+                    dto.setDataVenda(rs.getTimestamp("data_venda"));
+                    dto.setItemNome(rs.getString("item_nome"));
+                    dto.setQuantidade(rs.getInt("quantidade"));
+                    dto.setPrecoUnitario(rs.getBigDecimal("preco_unitario"));
+
+                    lista.add(dto);
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return lista;
+    }
 }

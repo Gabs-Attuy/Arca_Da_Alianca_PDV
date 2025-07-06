@@ -14,6 +14,7 @@ import javax.swing.JDesktopPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import model.VendaModel;
+import util.JasperReports;
 
 /**
  *
@@ -213,7 +214,8 @@ public class InternalFrameRelatorio extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnGerarRelatorioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGerarRelatorioActionPerformed
-  
+        JasperReports jasper = new JasperReports();
+        jasper.gerarRelatorio();
     }//GEN-LAST:event_btnGerarRelatorioActionPerformed
 
 
