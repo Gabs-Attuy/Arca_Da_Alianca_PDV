@@ -204,44 +204,46 @@ public class VendaDAO extends AbstractDAO<VendaModel, UUID> {
     }
     
     public List<ItemVendaDTO> buscarRelatorioVendasPorPeriodo(Date dataInicio, Date dataFim) {
-        List<ItemVendaDTO> lista = new ArrayList<>();
+    List<ItemVendaDTO> lista = new ArrayList<>();
 
-        String sql = """
-            SELECT 
-                v.data_venda,
-                p.nome AS item_nome,
-                ip.quantidade,
-                p.preco AS preco_unitario
-            FROM tb_venda v
-            INNER JOIN item_pedido ip ON v.uuid = ip.venda_id
-            INNER JOIN tb_produto p ON ip.produto_id = p.uuid
-            WHERE v.data_venda BETWEEN ? AND ?
-            ORDER BY v.data_venda ASC
-        """;
+    String sql = """
+        SELECT 
+            v.data_venda,
+            p.nome AS item_nome,
+            SUM(ip.quantidade) AS quantidade_total,
+            p.preco AS preco_unitario
+        FROM tb_venda v
+        INNER JOIN item_pedido ip ON v.uuid = ip.venda_id
+        INNER JOIN tb_produto p ON ip.produto_id = p.uuid
+        WHERE v.data_venda BETWEEN ? AND ?
+        GROUP BY v.data_venda, p.nome, p.preco
+        ORDER BY v.data_venda ASC
+    """;
 
-        try (Connection conn = UtilsDB.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setTimestamp(1, new java.sql.Timestamp(dataInicio.getTime()));
-            stmt.setTimestamp(2, new java.sql.Timestamp(dataFim.getTime()));
+    try (Connection conn = UtilsDB.getConnection();
+         PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            try (ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
-                    ItemVendaDTO dto = new ItemVendaDTO();
+        stmt.setTimestamp(1, new java.sql.Timestamp(dataInicio.getTime()));
+        stmt.setTimestamp(2, new java.sql.Timestamp(dataFim.getTime()));
 
-                    dto.setDataVenda(rs.getTimestamp("data_venda"));
-                    dto.setItemNome(rs.getString("item_nome"));
-                    dto.setQuantidade(rs.getInt("quantidade"));
-                    dto.setPrecoUnitario(rs.getBigDecimal("preco_unitario"));
+        try (ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                ItemVendaDTO dto = new ItemVendaDTO();
 
-                    lista.add(dto);
-                }
+                dto.setDataVenda(rs.getTimestamp("data_venda"));
+                dto.setItemNome(rs.getString("item_nome"));
+                dto.setQuantidade(rs.getInt("quantidade_total"));
+                dto.setPrecoUnitario(rs.getBigDecimal("preco_unitario"));
+
+                lista.add(dto);
             }
-
-        } catch (Exception e) {
-            e.printStackTrace();
         }
 
-        return lista;
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+
+    return lista;
     }
 }

@@ -12,6 +12,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.swing.JOptionPane;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -26,12 +27,12 @@ import net.sf.jasperreports.view.JasperViewer;
  */
 public class JasperReports {
     
-    public void gerarRelatorio(Date startDate, Date endDate) {
+    public void gerarRelatorio(Date dataInicio, Date dataFim) {
         try {
             
             // 1. Buscar dados
             VendaDAO vendaDAO = new VendaDAO();
-            List<ItemVendaDTO> dados = vendaDAO.buscarRelatorioVendasPorPeriodo(startDate, endDate);
+            List<ItemVendaDTO> dados = vendaDAO.buscarRelatorioVendasPorPeriodo(dataInicio, dataFim);
 
             // 2. Carregar JRXML
             String caminhoJrxml = "src/main/java/model/RelatorioVendaModel.jrxml"; // ajuste conforme seu projeto
@@ -39,22 +40,38 @@ public class JasperReports {
 
             // 3. Preencher parâmetros
             Map<String, Object> parametros = new HashMap<>();
-            parametros.put("dataInicio", startDate);
-            parametros.put("dataFim", endDate);
+            parametros.put("dataInicio", dataInicio);
+            parametros.put("dataFim", dataFim);
 
             // 4. Gerar fonte de dados
             JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(dados);
 
             // 5. Preencher relatório
             JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parametros, dataSource);
+            
+            // 6. Gerar nome do arquivo com a data e hora (Formato brasileiro)
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy_HH-mm-ss");
+            String dataHoraAtual = sdf.format(new Date());
+            
+            // Caminho para a área de trabalho
+            String caminhoAreaDeTrabalho = "C:\\Users\\jeff_\\OneDrive\\Desktop";
+            
+            // Caminho completo do arquivo PDF
+            String caminhoSaida = caminhoAreaDeTrabalho + "/Relatorio_Venda_" + dataHoraAtual + ".pdf";
+            
+            // 7. Verificar se o caminho está correto antes de gerar o arquivo
+            File arquivoSaida = new File(caminhoSaida);
+            if (arquivoSaida.getParentFile() != null && !arquivoSaida.getParentFile().exists()) {
+                // Se o diretório não existir, criar
+                arquivoSaida.getParentFile().mkdirs();
+            }
 
-            // 6. Exportar para PDF
-            String caminhoSaida = "src/main/resources/relatorio-vendas.pdf"; // será criado na raiz do projeto
-            File outDir = new File("relatorios");
-            if (!outDir.exists()) outDir.mkdirs();
-
+            // 8. Exportar para PDF
             JasperExportManager.exportReportToPdfFile(jasperPrint, caminhoSaida);
-            System.out.println("Relatório gerado em: " + new File(caminhoSaida).getAbsolutePath());
+            JOptionPane.showMessageDialog(null, 
+                              "Relatório gerado na área de trabalho com sucesso!",
+                              "Sucesso", 
+                              JOptionPane.INFORMATION_MESSAGE);
 
             // 7. Exibir na tela (opcional)
             JasperViewer.viewReport(jasperPrint, false);

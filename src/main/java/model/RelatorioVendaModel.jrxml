@@ -34,7 +34,7 @@
                     <textElement>
                         <font isBold="true"/>
                     </textElement>
-                    <textFieldExpression><![CDATA["Vendas do dia: " + new java.text.SimpleDateFormat("dd/MM/yyyy").format($F{dataVenda})]]></textFieldExpression>
+                    <textFieldExpression><![CDATA["Venda realizada em: " + new java.text.SimpleDateFormat("dd/MM/yyyy").format($F{dataVenda})]]></textFieldExpression>
                 </textField>
             </band>
         </groupHeader>
@@ -46,7 +46,7 @@
                     <textElement>
                         <font isBold="true"/>
                     </textElement>
-                    <textFieldExpression><![CDATA["Total do dia: R$ " + $V{TotalPorDia}]]></textFieldExpression>
+                    <textFieldExpression><![CDATA["Total da venda: R$ " + $V{TotalPorDia}]]></textFieldExpression>
                 </textField>
             </band>
         </groupFooter>
@@ -78,6 +78,15 @@
             </textElement>
             <text><![CDATA[Telefone: (11) 94197-9794 | Email: livrariaarcadaalianca@gmail.com]]></text>
           </staticText>
+          
+          <textField>
+            <reportElement x="0" y="170" width="555" height="20"/>
+            <textElement textAlignment="Center" verticalAlignment="Middle">
+                <font isBold="true" size="14"/>
+            </textElement>
+            <textFieldExpression><![CDATA["Relatório de Vendas: " + new java.text.SimpleDateFormat("dd/MM/yyyy").format($P{dataInicio}) + " - " + new java.text.SimpleDateFormat("dd/MM/yyyy").format($P{dataFim})]]></textFieldExpression>
+          </textField>
+        
         </band>
     </title>
 

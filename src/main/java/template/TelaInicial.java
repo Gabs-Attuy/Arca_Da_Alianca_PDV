@@ -5,6 +5,7 @@
 package template;
 
 import java.awt.Color;
+import java.awt.Toolkit;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
@@ -25,6 +26,7 @@ public class TelaInicial extends javax.swing.JFrame {
     public TelaInicial() {
         initComponents();
         setLocationRelativeTo(null);
+        this.setIconImage(Toolkit.getDefaultToolkit().getImage("src/main/resources/livraria_logo.png"));
         timeFormat = new SimpleDateFormat("HH:mm:ss");
         dateFormat = new SimpleDateFormat("EEEE, d 'de' MMMM 'de' yyyy", new Locale("pt", "BR"));
         startClock();
@@ -58,6 +60,7 @@ public class TelaInicial extends javax.swing.JFrame {
         lblTime = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         dpPrincipal = new javax.swing.JDesktopPane();
+        jLabel2 = new javax.swing.JLabel();
 
         jButton5.setText("jButton5");
 
@@ -185,15 +188,26 @@ public class TelaInicial extends javax.swing.JFrame {
         dpPrincipal.setPreferredSize(new java.awt.Dimension(960, 733));
         dpPrincipal.setVerifyInputWhenFocusTarget(false);
 
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/livraria_logo.png"))); // NOI18N
+        jLabel2.setText("jLabel2");
+
+        dpPrincipal.setLayer(jLabel2, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
         javax.swing.GroupLayout dpPrincipalLayout = new javax.swing.GroupLayout(dpPrincipal);
         dpPrincipal.setLayout(dpPrincipalLayout);
         dpPrincipalLayout.setHorizontalGroup(
             dpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 960, Short.MAX_VALUE)
+            .addGroup(dpPrincipalLayout.createSequentialGroup()
+                .addGap(219, 219, 219)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 501, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(240, Short.MAX_VALUE))
         );
         dpPrincipalLayout.setVerticalGroup(
             dpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(dpPrincipalLayout.createSequentialGroup()
+                .addGap(112, 112, 112)
+                .addComponent(jLabel2)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -328,6 +342,7 @@ public class TelaInicial extends javax.swing.JFrame {
     private javax.swing.JDesktopPane dpPrincipal;
     private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lblDate;
     private javax.swing.JLabel lblTime;
