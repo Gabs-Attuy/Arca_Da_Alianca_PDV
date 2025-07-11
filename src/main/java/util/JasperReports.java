@@ -26,16 +26,12 @@ import net.sf.jasperreports.view.JasperViewer;
  */
 public class JasperReports {
     
-    public void gerarRelatorio() {
+    public void gerarRelatorio(Date startDate, Date endDate) {
         try {
-            
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-            Date dataInicio = sdf.parse("01/06/2025");
-            Date dataFim = sdf.parse("07/07/2025");
             
             // 1. Buscar dados
             VendaDAO vendaDAO = new VendaDAO();
-            List<ItemVendaDTO> dados = vendaDAO.buscarRelatorioVendasPorPeriodo(dataInicio, dataFim);
+            List<ItemVendaDTO> dados = vendaDAO.buscarRelatorioVendasPorPeriodo(startDate, endDate);
 
             // 2. Carregar JRXML
             String caminhoJrxml = "src/main/java/model/RelatorioVendaModel.jrxml"; // ajuste conforme seu projeto
@@ -43,8 +39,8 @@ public class JasperReports {
 
             // 3. Preencher parâmetros
             Map<String, Object> parametros = new HashMap<>();
-            parametros.put("dataInicio", dataInicio);
-            parametros.put("dataFim", dataFim);
+            parametros.put("dataInicio", startDate);
+            parametros.put("dataFim", endDate);
 
             // 4. Gerar fonte de dados
             JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(dados);
