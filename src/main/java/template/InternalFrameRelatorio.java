@@ -8,12 +8,9 @@ import dao.VendaDAO;
 import java.awt.Color;
 import java.awt.Font;
 import java.math.BigDecimal;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JDesktopPane;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -28,6 +25,10 @@ import util.JasperReports;
 public class InternalFrameRelatorio extends javax.swing.JInternalFrame {
 
     private JDesktopPane desktop;
+    private int paginaAtual = 0;
+    private final int tamanhoPagina = 10;
+    private int totalPaginas = 0;
+    
     /**
      * Creates new form InternalFrameRelatorio
      * @param desktop
@@ -50,7 +51,9 @@ public class InternalFrameRelatorio extends javax.swing.JInternalFrame {
     public void loadVendasTable() {
         
         VendaDAO dao = new VendaDAO();
-        List<VendaModel> vendas = dao.listVendasDesc();
+        List<VendaModel> vendas = dao.findAllPaged(paginaAtual, tamanhoPagina);
+        int totalRegistros = dao.countAll();
+        totalPaginas = (int) Math.ceil((double) totalRegistros / tamanhoPagina);
         
         DefaultTableModel table = new DefaultTableModel();
         table.addColumn("Data da venda");
@@ -67,8 +70,8 @@ public class InternalFrameRelatorio extends javax.swing.JInternalFrame {
             });
         }
         tblVendas.setModel(table);
+        lblTotalPages.setText("Página " + (paginaAtual + 1) + " de " + totalPaginas);
         setTableDesign(tblVendas);
-
     }
     
     public void setTableDesign(JTable table) {
@@ -111,12 +114,16 @@ public class InternalFrameRelatorio extends javax.swing.JInternalFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        btnPagAnterior = new javax.swing.JButton();
+        lblTotalPages = new javax.swing.JLabel();
+        btnProximaPagina = new javax.swing.JButton();
 
         jLabel5.setText("jLabel5");
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(13, 45, 89));
-        jLabel1.setText("Relatórios");
+        jLabel1.setText("Relatórios de vendas");
 
         lblTitleVendas.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         lblTitleVendas.setForeground(new java.awt.Color(13, 45, 89));
@@ -173,11 +180,18 @@ public class InternalFrameRelatorio extends javax.swing.JInternalFrame {
             }
         });
 
+        startDatePicker.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(13, 45, 89)));
+        startDatePicker.setDateFormatString("dd/MM/yyyy");
+
+        endDatePicker.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(13, 45, 89)));
+        endDatePicker.setDateFormatString("dd/MM/yyyy");
+
         jLabel2.setForeground(new java.awt.Color(13, 45, 89));
         jLabel2.setText("Data de início");
 
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(13, 45, 89));
-        jLabel3.setText("até");
+        jLabel3.setText("-");
 
         jLabel4.setForeground(new java.awt.Color(13, 45, 89));
         jLabel4.setText("Data final");
@@ -185,6 +199,34 @@ public class InternalFrameRelatorio extends javax.swing.JInternalFrame {
         jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(13, 45, 89));
         jLabel6.setText("Filtro de Relatório");
+
+        jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(13, 45, 89));
+        jLabel7.setText("Listagem de vendas");
+
+        btnPagAnterior.setBackground(new java.awt.Color(13, 45, 89));
+        btnPagAnterior.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnPagAnterior.setForeground(new java.awt.Color(255, 255, 255));
+        btnPagAnterior.setText("ANTERIOR <<");
+        btnPagAnterior.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPagAnteriorActionPerformed(evt);
+            }
+        });
+
+        lblTotalPages.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblTotalPages.setForeground(new java.awt.Color(13, 45, 89));
+        lblTotalPages.setText("numberOfPages");
+
+        btnProximaPagina.setBackground(new java.awt.Color(13, 45, 89));
+        btnProximaPagina.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnProximaPagina.setForeground(new java.awt.Color(255, 255, 255));
+        btnProximaPagina.setText(">> PRÓXIMO");
+        btnProximaPagina.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnProximaPaginaActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -194,7 +236,7 @@ public class InternalFrameRelatorio extends javax.swing.JInternalFrame {
                 .addGap(80, 80, 80)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 309, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -210,28 +252,37 @@ public class InternalFrameRelatorio extends javax.swing.JInternalFrame {
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addComponent(lblTotalVendas, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(155, 155, 155))))))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(180, 180, 180)
+                .addComponent(btnPagAnterior)
+                .addGap(105, 105, 105)
+                .addComponent(lblTotalPages)
+                .addGap(105, 105, 105)
+                .addComponent(btnProximaPagina)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(90, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel6)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(startDatePicker, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 11, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(endDatePicker, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel4)
+                                .addGap(89, 89, 89))))
+                    .addComponent(jLabel7)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 760, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(layout.createSequentialGroup()
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel2)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(startDatePicker, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(jLabel3)))
-                            .addGap(12, 12, 12)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(endDatePicker, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(btnGerarRelatorio, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jLabel4)
-                                    .addGap(0, 0, Short.MAX_VALUE))))))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnGerarRelatorio, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(98, 98, 98))
         );
         layout.setVerticalGroup(
@@ -247,22 +298,29 @@ public class InternalFrameRelatorio extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblQtdVendas)
                     .addComponent(lblTotalVendas))
-                .addGap(93, 93, 93)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(55, 55, 55)
+                .addGap(39, 39, 39)
+                .addComponent(jLabel7)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(28, 28, 28)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnPagAnterior)
+                    .addComponent(btnProximaPagina)
+                    .addComponent(lblTotalPages))
+                .addGap(27, 27, 27)
                 .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel4)
                     .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnGerarRelatorio, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(jLabel3)
-                        .addComponent(startDatePicker, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(endDatePicker, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(69, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel3)
+                    .addComponent(startDatePicker, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(endDatePicker, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(2, 2, 2)
+                .addComponent(btnGerarRelatorio, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(60, Short.MAX_VALUE))
         );
 
         pack();
@@ -281,14 +339,31 @@ public class InternalFrameRelatorio extends javax.swing.JInternalFrame {
             
             JasperReports jasper = new JasperReports();
             jasper.gerarRelatorio(startDate, endDate);
+            
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(rootPane, "Não é possível gerar o relatório sem informar as datas de filtro!");
         }
     }//GEN-LAST:event_btnGerarRelatorioActionPerformed
 
+    private void btnPagAnteriorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPagAnteriorActionPerformed
+        if (paginaAtual > 0) {
+            paginaAtual--;
+            loadVendasTable();
+        }
+    }//GEN-LAST:event_btnPagAnteriorActionPerformed
+
+    private void btnProximaPaginaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProximaPaginaActionPerformed
+        if (paginaAtual < totalPaginas - 1) {
+            paginaAtual++;
+            loadVendasTable();
+        }
+    }//GEN-LAST:event_btnProximaPaginaActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGerarRelatorio;
+    private javax.swing.JButton btnPagAnterior;
+    private javax.swing.JButton btnProximaPagina;
     private com.toedter.calendar.JDateChooser endDatePicker;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -296,10 +371,12 @@ public class InternalFrameRelatorio extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lblQtdVendas;
     private javax.swing.JLabel lblTitleQtdVendas;
     private javax.swing.JLabel lblTitleVendas;
+    private javax.swing.JLabel lblTotalPages;
     private javax.swing.JLabel lblTotalVendas;
     private com.toedter.calendar.JDateChooser startDatePicker;
     private javax.swing.JTable tblVendas;

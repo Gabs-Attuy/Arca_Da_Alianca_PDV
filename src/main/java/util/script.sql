@@ -176,3 +176,34 @@ INSERT INTO produto (nome, categoria, preco, estoque, codigo_barras) VALUES
 ('Balsamo Pequeno.', 'Bálsamos', 4.0, 10, '896588034700'),
 ('Balsamo Canela', 'Bálsamos', 6.0, 10, '474002969909'),
 ('Balsamo Medio', 'Bálsamos', 6.0, 10, '672691900711');
+
+# Depois de realizar o INSERT, crie a função abaixo e rode o update 
+
+-- Criação da função para calcular o dígito verificador EAN-13 no PostgreSQL
+CREATE OR REPLACE FUNCTION calcular_dv(codigo VARCHAR)
+RETURNS CHAR AS $$
+DECLARE
+    soma INT := 0;
+    i INT;
+    resultado INT;
+    dv INT;
+BEGIN
+    -- Calcular soma ponderada dos 12 primeiros dígitos
+    FOR i IN 1..12 LOOP
+        soma := soma + CAST(SUBSTRING(codigo, i, 1) AS INT) * CASE WHEN i % 2 = 1 THEN 1 ELSE 3 END;
+    END LOOP;
+
+    -- Calcular o dígito verificador
+    resultado := soma % 10;
+    dv := (10 - resultado) % 10;
+
+    -- Retornar o dígito verificador
+    RETURN dv::CHAR;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Atualizando a tabela 'produto' para adicionar o dígito verificador no código de barras apenas para os produtos com estoque = 10
+UPDATE tb_produto
+SET codigo_barras = CONCAT(SUBSTRING(codigo_barras, 1, 12), calcular_dv(SUBSTRING(codigo_barras, 1, 12)))
+WHERE estoque = 10;
+
