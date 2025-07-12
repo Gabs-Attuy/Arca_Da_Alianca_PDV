@@ -80,20 +80,12 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="endDatePicker" alignment="0" min="-2" pref="141" max="-2" attributes="0"/>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="89" max="-2" attributes="0"/>
-                          </Group>
+                          <Component id="jLabel4" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                      <Component id="jScrollPane2" min="-2" pref="760" max="-2" attributes="0"/>
-                      <Group type="102" attributes="0">
-                          <EmptySpace max="32767" attributes="0"/>
-                          <Component id="btnGerarRelatorio" min="-2" pref="179" max="-2" attributes="0"/>
-                      </Group>
-                  </Group>
+                  <Component id="jScrollPane2" min="-2" pref="760" max="-2" attributes="0"/>
+                  <Component id="btnGerarRelatorio" alignment="1" min="-2" pref="179" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="98" max="-2" attributes="0"/>
           </Group>
@@ -137,9 +129,9 @@
                   <Component id="startDatePicker" min="-2" max="-2" attributes="0"/>
                   <Component id="endDatePicker" alignment="1" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
               <Component id="btnGerarRelatorio" min="-2" pref="38" max="-2" attributes="0"/>
-              <EmptySpace pref="60" max="32767" attributes="0"/>
+              <EmptySpace min="-2" pref="62" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -153,7 +145,7 @@
         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="59" green="2d" red="d" type="rgb"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Relat&#xf3;rios de vendas"/>
+        <Property name="text" type="java.lang.String" value="Relat&#xf3;rio de vendas"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="lblTitleVendas">
