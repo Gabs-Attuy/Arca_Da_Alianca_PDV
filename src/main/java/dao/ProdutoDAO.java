@@ -5,6 +5,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import model.ProdutoModel;
 import util.UtilsDB;
@@ -119,4 +121,28 @@ public class ProdutoDAO extends AbstractDAO<ProdutoModel, UUID>{
         return null;
     }
 
+    public List<ProdutoModel> listarProdutosParaRelatorio(boolean apenasComEstoqueZerado) {
+        List<ProdutoModel> produtos = new ArrayList<>();
+
+        String sql = "SELECT * FROM " + getTableName();
+        if (apenasComEstoqueZerado) {
+            sql += " WHERE estoque = 0";
+        }
+
+        try (Connection conn = UtilsDB.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                produtos.add(mapResultSetToEntity(rs));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        return produtos;
+    }
 }
