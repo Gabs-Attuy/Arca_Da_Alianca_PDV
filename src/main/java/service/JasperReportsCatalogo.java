@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package util;
+package service;
 
 import com.google.zxing.WriterException;
 import dao.ProdutoDAO;
@@ -92,7 +92,7 @@ public class JasperReportsCatalogo {
                     produto.getNome(),
                     produto.getCodigoBarras(),
                     produto.getCategoria(),
-                    GeradorCodBarras.gerarCodigoBarrasEAN13(produto.getCodigoBarras())
+                    GeradorCodBarrasService.gerarCodigoBarrasEAN13(produto.getCodigoBarras())
                 );
                 return dto;
             } catch (WriterException e) {

@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
- */
 package template;
 
 import com.google.zxing.WriterException;
@@ -12,7 +8,7 @@ import java.math.BigDecimal;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import model.ProdutoModel;
-import util.GeradorCodBarras;
+import service.GeradorCodBarrasService;
 
 /**
  *
@@ -39,7 +35,7 @@ public class InternalFrameAlteracaoProduto extends javax.swing.JInternalFrame {
         txtCodigoBarras.setText(produto.getCodigoBarras());
         BufferedImage imagemCodigo;
         try {
-            imagemCodigo = GeradorCodBarras.gerarCodigoBarrasEAN13(txtCodigoBarras.getText());
+            imagemCodigo = GeradorCodBarrasService.gerarCodigoBarrasEAN13(txtCodigoBarras.getText());
             lblBarcode.setIcon(new ImageIcon(imagemCodigo));
             lblBarcode.setText("");
         } catch (WriterException e) {

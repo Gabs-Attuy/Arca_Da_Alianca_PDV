@@ -18,7 +18,7 @@ import javax.swing.table.DefaultTableModel;
 import model.ItemPedidoModel;
 import model.ProdutoModel;
 import model.VendaModel;
-import util.SnsService;
+import service.SnsService;
 /**
  *
  * @author jeff_

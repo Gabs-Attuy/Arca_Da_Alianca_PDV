@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package util;
+package service;
 
 import dao.ProdutoDAO;
 import dao.VendaDAO;
@@ -28,7 +28,7 @@ import net.sf.jasperreports.view.JasperViewer;
  *
  * @author jeff_
  */
-public class JasperReports {
+public class JasperReportsService {
     
     public void gerarRelatorioVendas(Date dataInicio, Date dataFim) {
         try {

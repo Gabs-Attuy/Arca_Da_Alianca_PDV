@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
- */
 package template;
 
 import dao.VendaDAO;
@@ -17,7 +13,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import model.VendaModel;
-import util.JasperReports;
+import service.JasperReportsService;
 
 /**
  *
@@ -333,7 +329,7 @@ public class InternalFrameRelatorio extends javax.swing.JInternalFrame {
                 return;
             }
             
-            JasperReports jasper = new JasperReports();
+            JasperReportsService jasper = new JasperReportsService();
             jasper.gerarRelatorioVendas(startDate, endDate);
             
         } catch (HeadlessException ex) {

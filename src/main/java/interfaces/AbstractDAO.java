@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package interfaces;
 
 import java.sql.Connection;
@@ -10,7 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import util.UtilsDB;
+import service.DatabaseMethodsService;
 
 /**
  *
@@ -39,7 +35,7 @@ public abstract class AbstractDAO<T, ID> implements GenericDAO<T, ID> {
     @Override
     public T findById(ID id) {
         String sql = "SELECT * FROM " + getTableName() + " WHERE " + getIdColumn() + " = ?";
-        try (Connection connection = UtilsDB.getConnection();
+        try (Connection connection = DatabaseMethodsService.getConnection();
              PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setObject(1, id);
             ResultSet rs = stmt.executeQuery();
@@ -59,7 +55,7 @@ public abstract class AbstractDAO<T, ID> implements GenericDAO<T, ID> {
     public List<T> findAll() {
         String sql = "SELECT * FROM " + getTableName();
         List<T> list = new ArrayList<>();
-        try (Connection connection = UtilsDB.getConnection();
+        try (Connection connection = DatabaseMethodsService.getConnection();
              PreparedStatement stmt = connection.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
@@ -80,7 +76,7 @@ public abstract class AbstractDAO<T, ID> implements GenericDAO<T, ID> {
         List<T> list = new ArrayList<>();
         int offset = page * size;
 
-        try (Connection connection = UtilsDB.getConnection();
+        try (Connection connection = DatabaseMethodsService.getConnection();
              PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, size);
             stmt.setInt(2, offset);
@@ -104,7 +100,7 @@ public abstract class AbstractDAO<T, ID> implements GenericDAO<T, ID> {
     public int countAll() {
         String sql = "SELECT COUNT(*) FROM " + getTableName();
 
-        try (Connection connection = UtilsDB.getConnection();
+        try (Connection connection = DatabaseMethodsService.getConnection();
              PreparedStatement stmt = connection.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
             if (rs.next()) {
@@ -123,7 +119,7 @@ public abstract class AbstractDAO<T, ID> implements GenericDAO<T, ID> {
     public void deleteById(ID id) {
         String sql = "DELETE FROM " + getTableName() + " WHERE " + getIdColumn() + " = ?";
         
-        try (Connection connection = UtilsDB.getConnection();
+        try (Connection connection = DatabaseMethodsService.getConnection();
              PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setObject(1, id);
             int affected = stmt.executeUpdate();
