@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
+              name="CatalogoProdutos" language="java" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+
+    <property name="com.jaspersoft.studio.data.defaultdataadapter" value="ProdutoCatalogoLogo"/>
+    <queryString language="SQL"><![CDATA[]]></queryString>
+
+    <field name="nome" class="java.lang.String"/>
+    <field name="codigoDeBarras" class="java.awt.Image"/>
+    <field name="codigoEAN" class="java.lang.String"/>
+    <field name="categoria" class="java.lang.String"/>
+
+    <group name="CategoriaGroup">
+        <groupExpression><![CDATA[$F{categoria}]]></groupExpression>
+        <groupHeader>
+            <band height="30">
+                <textField>
+                    <reportElement x="0" y="5" width="555" height="20" backcolor="#F0F0F0" mode="Opaque"/>
+                    <textElement textAlignment="Center" verticalAlignment="Middle">
+                        <font size="14" isBold="true"/>
+                    </textElement>
+                    <textFieldExpression><![CDATA[$F{categoria}]]></textFieldExpression>
+                </textField>
+            </band>
+        </groupHeader>
+        <groupFooter>
+            <band height="10"/>
+        </groupFooter>
+    </group>
+
+    <title>
+        <band height="160">
+            <image>
+                <reportElement x="210" y="0" width="300" height="100"/>
+                <imageExpression><![CDATA["src/main/resources/livraria_logo.png"]]></imageExpression>
+            </image>
+
+            <staticText>
+                <reportElement x="0" y="110" width="555" height="15"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="12"/>
+                </textElement>
+                <text><![CDATA[Livraria Arca da Aliança - R. Forte de Vila Bela, 62 - Jardim Iporã]]></text>
+            </staticText>
+
+            <staticText>
+                <reportElement x="0" y="130" width="555" height="15"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="12"/>
+                </textElement>
+                <text><![CDATA[Telefone: (11) 94197-9794 | Email: livrariaarcadaalianca@gmail.com]]></text>
+            </staticText>
+        </band>
+    </title>
+
+    <detail>
+        <band height="100">
+            <textField>
+                <reportElement x="0" y="0" width="180" height="20"/>
+                <textElement>
+                    <font size="12" isBold="true"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{nome}]]></textFieldExpression>
+            </textField>
+
+            <textField>
+                <reportElement x="0" y="25" width="180" height="20"/>
+                <textElement>
+                    <font size="11"/>
+                </textElement>
+                <textFieldExpression><![CDATA["EAN: " + $F{codigoEAN}]]></textFieldExpression>
+            </textField>
+
+            <image>
+                <reportElement x="200" y="0" width="320" height="80"/>
+                <imageExpression><![CDATA[$F{codigoDeBarras}]]></imageExpression>
+            </image>
+        </band>
+    </detail>
+
+    <pageFooter>
+        <band height="20">
+            <staticText>
+                <reportElement x="0" y="0" width="555" height="20"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="10"/>
+                </textElement>
+                <text><![CDATA[Página gerada automaticamente - Catálogo de Produtos]]></text>
+            </staticText>
+        </band>
+    </pageFooter>
+</jasperReport>

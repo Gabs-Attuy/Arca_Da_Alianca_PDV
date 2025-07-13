@@ -4,10 +4,15 @@
  */
 package template;
 
+import com.google.zxing.WriterException;
 import dao.ProdutoDAO;
+import java.awt.HeadlessException;
+import java.awt.image.BufferedImage;
 import java.math.BigDecimal;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import model.ProdutoModel;
+import util.GeradorCodBarras;
 
 /**
  *
@@ -32,6 +37,15 @@ public class InternalFrameAlteracaoProduto extends javax.swing.JInternalFrame {
         txtEstoque.setText(String.valueOf(produto.getEstoque()));
         cbxCategoria.setSelectedItem(produto.getCategoria());
         txtCodigoBarras.setText(produto.getCodigoBarras());
+        BufferedImage imagemCodigo;
+        try {
+            imagemCodigo = GeradorCodBarras.gerarCodigoBarrasEAN13(txtCodigoBarras.getText());
+            lblBarcode.setIcon(new ImageIcon(imagemCodigo));
+            lblBarcode.setText("");
+        } catch (WriterException e) {
+            lblBarcode.setText("Erro ao gerar código.");
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -58,6 +72,7 @@ public class InternalFrameAlteracaoProduto extends javax.swing.JInternalFrame {
         lblTitulo = new javax.swing.JLabel();
         btnCancel = new javax.swing.JButton();
         lblAviso1 = new javax.swing.JLabel();
+        lblBarcode = new javax.swing.JLabel();
 
         setPreferredSize(new java.awt.Dimension(960, 733));
 
@@ -139,45 +154,47 @@ public class InternalFrameAlteracaoProduto extends javax.swing.JInternalFrame {
         lblAviso1.setForeground(new java.awt.Color(13, 45, 89));
         lblAviso1.setText("Cadastrar o preço com . (Ex: 100.99)");
 
+        lblBarcode.setText("jLabel1");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(333, 333, 333)
-                            .addComponent(lblTitulo))
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(234, 234, 234)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(lblNomeProduto)
-                                .addComponent(txtNomeProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 453, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(lblAviso1)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(234, 234, 234)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 197, Short.MAX_VALUE)
-                                .addComponent(btnSubmit, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(lblEstoque, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtEstoque)
-                            .addComponent(lblCodigoBarras)
-                            .addComponent(lblAviso)
-                            .addComponent(lblCategoria)
-                            .addComponent(cbxCategoria, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(txtPreco)
-                            .addComponent(lblPreco, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtCodigoBarras))))
+                                .addComponent(lblTitulo)
+                                .addGap(70, 70, 70))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(lblAviso1)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 197, Short.MAX_VALUE)
+                                    .addComponent(btnSubmit, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(lblCategoria)
+                                .addComponent(cbxCategoria, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(txtPreco)
+                                .addComponent(lblPreco, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(lblNomeProduto)
+                                .addComponent(txtNomeProduto, javax.swing.GroupLayout.DEFAULT_SIZE, 453, Short.MAX_VALUE)
+                                .addComponent(lblEstoque, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(lblCodigoBarras)
+                                .addComponent(lblAviso)
+                                .addComponent(txtEstoque)
+                                .addComponent(txtCodigoBarras))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(334, 334, 334)
+                        .addComponent(lblBarcode, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(118, 261, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(34, 34, 34)
                 .addComponent(lblTitulo)
-                .addGap(38, 38, 38)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblNomeProduto)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtNomeProduto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -185,13 +202,15 @@ public class InternalFrameAlteracaoProduto extends javax.swing.JInternalFrame {
                 .addComponent(lblEstoque)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtEstoque, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
                 .addComponent(lblCodigoBarras)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtCodigoBarras, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblAviso)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(27, 27, 27)
+                .addComponent(lblBarcode, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
                 .addComponent(lblCategoria)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(cbxCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -201,7 +220,7 @@ public class InternalFrameAlteracaoProduto extends javax.swing.JInternalFrame {
                 .addComponent(txtPreco, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblAviso1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 58, Short.MAX_VALUE)
+                .addGap(34, 34, 34)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnSubmit, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -228,13 +247,13 @@ public class InternalFrameAlteracaoProduto extends javax.swing.JInternalFrame {
             produto.setCategoria(cbxCategoria.getSelectedItem().toString());
             produto.setPreco(new BigDecimal(txtPreco.getText()));
             produto.setEstoque(Integer.parseInt(txtEstoque.getText()));
-            produto.setCodigoBarras(txtCodigoBarras.getText());
+            produto.setCodigoBarras(txtCodigoBarras.getText());            
             ProdutoDAO dao = new ProdutoDAO();
             dao.update(produto);
 
             JOptionPane.showMessageDialog(this, "Produto alterado com sucesso!");
             this.dispose();
-        } catch (Exception e) {
+        } catch (HeadlessException | NumberFormatException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Erro ao alterar produto: " + e.getMessage());
         }
@@ -246,7 +265,7 @@ public class InternalFrameAlteracaoProduto extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txtCodigoBarrasActionPerformed
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
-        // TODO add your handling code here:
+        this.dispose();
     }//GEN-LAST:event_btnCancelActionPerformed
 
     private void txtPrecoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPrecoActionPerformed
@@ -260,6 +279,7 @@ public class InternalFrameAlteracaoProduto extends javax.swing.JInternalFrame {
     private javax.swing.JComboBox<String> cbxCategoria;
     private javax.swing.JLabel lblAviso;
     private javax.swing.JLabel lblAviso1;
+    private javax.swing.JLabel lblBarcode;
     private javax.swing.JLabel lblCategoria;
     private javax.swing.JLabel lblCodigoBarras;
     private javax.swing.JLabel lblEstoque;
