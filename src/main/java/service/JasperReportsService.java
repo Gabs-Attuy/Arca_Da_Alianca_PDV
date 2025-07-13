@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package service;
 
 import com.google.zxing.WriterException;
@@ -17,6 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import javax.swing.ButtonGroup;
 import javax.swing.JOptionPane;
 import model.ProdutoModel;
 import net.sf.jasperreports.engine.JRException;
@@ -27,6 +24,7 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.view.JasperViewer;
+import template.InternalFrameRelatorioProduto;
 
 /**
  *
@@ -42,7 +40,7 @@ public class JasperReportsService {
             List<ItemVendaDTO> dados = vendaDAO.buscarRelatorioVendasPorPeriodo(dataInicio, dataFim);
 
             // 2. Carregar JRXML
-            String caminhoJrxml = "src/main/java/model/RelatorioVendaModel.jrxml"; // ajuste conforme seu projeto
+            String caminhoJrxml = "src/main/java/jrxml/RelatorioVendaModel.jrxml"; // ajuste conforme seu projeto
             JasperReport jasperReport = JasperCompileManager.compileReport(caminhoJrxml);
 
             // 3. Preencher parâmetros
@@ -61,7 +59,7 @@ public class JasperReportsService {
             String dataHoraAtual = sdf.format(new Date());
             
             // Caminho para a área de trabalho
-            String caminhoAreaDeTrabalho = "C:\\Users\\jeff_\\OneDrive\\Desktop";
+            String caminhoAreaDeTrabalho = "relatorios";
             
             // Caminho completo do arquivo PDF
             String caminhoSaida = caminhoAreaDeTrabalho + "/Relatorio_Venda_" + dataHoraAtual + ".pdf";
@@ -88,15 +86,24 @@ public class JasperReportsService {
         }
     }
     
-    public void gerarRelatorioProduto() throws JRException {
+    public void gerarRelatorioProduto(ButtonGroup btn) throws JRException {
         ProdutoDAO produtoDAO = new ProdutoDAO();
-        List<ProdutoModel> produtos = produtoDAO.listarProdutosParaRelatorio(false);
+        List<ProdutoModel> produtos;
+        
+        String filtro = InternalFrameRelatorioProduto.setFiltroRelatorio(btn);
+
+        
+        if (filtro.equals("Apenas produtos sem estoque")) {
+            produtos = produtoDAO.listarProdutosParaRelatorio(true);
+        } else {
+            produtos = produtoDAO.listarProdutosParaRelatorio(false);
+        }
 
         Map<String, Object> parametros = new HashMap<>();
-        JasperReport jasperReport = JasperCompileManager.compileReport("src/main/java/model/RelatorioProdutoModel.jrxml");
+        JasperReport jasperReport = JasperCompileManager.compileReport("src/main/java/jrxml/RelatorioProdutoModel.jrxml");
 
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parametros, new JRBeanCollectionDataSource(produtos));
-        JasperExportManager.exportReportToPdfFile(jasperPrint, "relatorio_produtos.pdf");
+        JasperExportManager.exportReportToPdfFile(jasperPrint, "relatorios/relatorio_produtos.pdf");
         
         JasperViewer.viewReport(jasperPrint, false);
         
@@ -111,7 +118,7 @@ public class JasperReportsService {
             List<ProdutoCatalogoDTO> dados = converterParaCatalogo(produtos);
             
             // 2. Carregar JRXML
-            String caminhoJrxml = "src/main/java/model/CatalogoProdutosModel.jrxml";
+            String caminhoJrxml = "src/main/java/jrxml/CatalogoProdutosModel.jrxml";
             JasperReport jasperReport = JasperCompileManager.compileReport(caminhoJrxml);
 
             // 3. Preencher parâmetros

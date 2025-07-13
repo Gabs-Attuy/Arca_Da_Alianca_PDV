@@ -3,7 +3,10 @@ package template;
 import dao.ProdutoDAO;
 import java.awt.Color;
 import java.awt.Font;
+import java.util.Enumeration;
 import java.util.List;
+import javax.swing.AbstractButton;
+import javax.swing.ButtonGroup;
 import javax.swing.JDesktopPane;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -46,6 +49,7 @@ public class InternalFrameRelatorioProduto extends javax.swing.JInternalFrame {
 
         btnGerarRelatorio = new javax.swing.JButton();
         jRadioButton3 = new javax.swing.JRadioButton();
+        rbGroupFiltroRelatorio = new javax.swing.ButtonGroup();
         lblTitle = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -141,8 +145,10 @@ public class InternalFrameRelatorioProduto extends javax.swing.JInternalFrame {
         jLabel6.setForeground(new java.awt.Color(13, 45, 89));
         jLabel6.setText("Filtro de Relatório");
 
+        rbGroupFiltroRelatorio.add(rbProdSemEstoque);
         rbProdSemEstoque.setText("Apenas produtos sem estoque");
 
+        rbGroupFiltroRelatorio.add(rbTodosProd);
         rbTodosProd.setText("Todos os produtos");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -223,8 +229,16 @@ public class InternalFrameRelatorioProduto extends javax.swing.JInternalFrame {
     private void btnGerarRelatorioProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGerarRelatorioProdutosActionPerformed
 
         try {
+            String filtro = setFiltroRelatorio(rbGroupFiltroRelatorio);
+            if (filtro == null) {
+                javax.swing.JOptionPane.showMessageDialog(this, "Selecione um filtro para gerar o relatório",
+                        "Erro ao gerar relatório",
+                        JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
+            
             JasperReportsService jasper = new JasperReportsService();
-            jasper.gerarRelatorioProduto();
+            jasper.gerarRelatorioProduto(rbGroupFiltroRelatorio);
 
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(rootPane, ex.getMessage());
@@ -272,6 +286,18 @@ public class InternalFrameRelatorioProduto extends javax.swing.JInternalFrame {
         table.getTableHeader().setBackground(new Color(13, 45, 89));
         table.getTableHeader().setForeground(Color.WHITE);
     }
+    
+    public static String setFiltroRelatorio(ButtonGroup btnGroup) {
+        for (Enumeration<AbstractButton> buttons = btnGroup.getElements(); buttons.hasMoreElements();) {
+            AbstractButton button = buttons.nextElement();
+
+            if (button.isSelected()) {
+                return button.getText(); 
+            }
+        }
+
+        return null; 
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGerarRelatorio;
@@ -284,6 +310,7 @@ public class InternalFrameRelatorioProduto extends javax.swing.JInternalFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lblTitle;
     private javax.swing.JLabel lblTotalPages;
+    private javax.swing.ButtonGroup rbGroupFiltroRelatorio;
     private javax.swing.JRadioButton rbProdSemEstoque;
     private javax.swing.JRadioButton rbTodosProd;
     private javax.swing.JTable tblProdutos;
