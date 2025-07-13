@@ -9,7 +9,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import model.ProdutoModel;
-import util.JasperReports;
+import service.JasperReportsService;
 
 /**
  *
@@ -223,7 +223,7 @@ public class InternalFrameRelatorioProduto extends javax.swing.JInternalFrame {
     private void btnGerarRelatorioProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGerarRelatorioProdutosActionPerformed
 
         try {
-            JasperReports jasper = new JasperReports();
+            JasperReportsService jasper = new JasperReportsService();
             jasper.gerarRelatorioProduto();
 
         } catch (Exception ex) {

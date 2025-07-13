@@ -8,8 +8,8 @@ import java.math.BigDecimal;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import model.ProdutoModel;
-import util.GeradorCodBarras;
-import util.Validator;
+import service.GeradorCodBarrasService;
+import service.ValidatorService;
 
 /**
  *
@@ -26,7 +26,7 @@ public class InternalFrameCadastroProduto extends javax.swing.JInternalFrame {
         
         BufferedImage imagemCodigo;
         try {
-            imagemCodigo = GeradorCodBarras.gerarCodigoBarrasEAN13(txtCodigoBarras.getText());
+            imagemCodigo = GeradorCodBarrasService.gerarCodigoBarrasEAN13(txtCodigoBarras.getText());
             lblBarcode.setIcon(new ImageIcon(imagemCodigo));
             lblBarcode.setText(""); // remove o texto padrão
         } catch (WriterException e) {
@@ -34,7 +34,7 @@ public class InternalFrameCadastroProduto extends javax.swing.JInternalFrame {
             e.printStackTrace();
         }
             
-        Validator validator = new Validator();
+        ValidatorService validator = new ValidatorService();
         
         txtEstoque.addKeyListener(new java.awt.event.KeyAdapter() {
             @Override
@@ -245,7 +245,7 @@ public class InternalFrameCadastroProduto extends javax.swing.JInternalFrame {
     private void btnSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitActionPerformed
 
         try {
-            Validator validator = new Validator();
+            ValidatorService validator = new ValidatorService();
             validator.validateNullField(txtNomeProduto);
             validator.validateNullField(txtEstoque);
             validator.validatePrice(txtPreco);

@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import model.ProdutoModel;
-import util.UtilsDB;
+import service.DatabaseMethodsService;
 
 /**
  *
@@ -47,7 +47,7 @@ public class ProdutoDAO extends AbstractDAO<ProdutoModel, UUID>{
     public void save(ProdutoModel p) {
         String sql = "INSERT INTO " + getTableName() + " (nome, categoria, preco, estoque, codigo_barras) VALUES (?, ?, ?, ?, ?)";
 
-        try (Connection conn = UtilsDB.getConnection();
+        try (Connection conn = DatabaseMethodsService.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, p.getNome());
             stmt.setString(2, p.getCategoria());
@@ -80,7 +80,7 @@ public class ProdutoDAO extends AbstractDAO<ProdutoModel, UUID>{
     public void update(ProdutoModel p) {
         String sql = "UPDATE " + getTableName() + " SET nome = ?, categoria = ?, preco = ?, estoque = ?, codigo_barras = ? WHERE " + getIdColumn() + " = ?";
 
-        try (Connection conn = UtilsDB.getConnection();
+        try (Connection conn = DatabaseMethodsService.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, p.getNome());
             stmt.setString(2, p.getCategoria());
@@ -104,7 +104,7 @@ public class ProdutoDAO extends AbstractDAO<ProdutoModel, UUID>{
     
     public ProdutoModel findByCodigoBarras(String codigo) {
         String sql = "SELECT * FROM " + getTableName() + " WHERE codigo_barras = ?";
-        try (Connection conn = UtilsDB.getConnection();
+        try (Connection conn = DatabaseMethodsService.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, codigo);
             try (ResultSet rs = stmt.executeQuery()) {
@@ -129,7 +129,7 @@ public class ProdutoDAO extends AbstractDAO<ProdutoModel, UUID>{
             sql += " WHERE estoque = 0";
         }
 
-        try (Connection conn = UtilsDB.getConnection();
+        try (Connection conn = DatabaseMethodsService.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
 

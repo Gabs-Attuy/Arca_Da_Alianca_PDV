@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package dao;
 
 import enums.FormaPagamento;
@@ -19,7 +15,7 @@ import model.ItemPedidoModel;
 import model.VendaModel;
 import dto.ItemVendaDTO;
 import java.util.Date;
-import util.UtilsDB;
+import service.DatabaseMethodsService;
 
 /**
  *
@@ -52,7 +48,7 @@ public class VendaDAO extends AbstractDAO<VendaModel, UUID> {
     public void save(VendaModel entity) {
         String sql = "INSERT INTO " + getTableName() + " (data_venda, total_venda, forma_pagamento) VALUES (?, ?, ?)";
 
-        try (Connection conn = UtilsDB.getConnection();
+        try (Connection conn = DatabaseMethodsService.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setTimestamp(1, new Timestamp(entity.getDataVenda().getTime()));
@@ -77,7 +73,7 @@ public class VendaDAO extends AbstractDAO<VendaModel, UUID> {
     public BigDecimal sumVendas() {
         String sql = "SELECT SUM(valor_total) FROM tb_venda WHERE data_venda >= CURRENT_DATE - INTERVAL '30 days'";
     
-        try (Connection conn = UtilsDB.getConnection();
+        try (Connection conn = DatabaseMethodsService.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
 
@@ -94,7 +90,7 @@ public class VendaDAO extends AbstractDAO<VendaModel, UUID> {
     public int countVendas() {
         String sql = "SELECT COUNT(*) FROM tb_venda WHERE data_venda >= CURRENT_DATE - INTERVAL '30 days'";
         
-        try (Connection conn = UtilsDB.getConnection();
+        try (Connection conn = DatabaseMethodsService.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(sql);
                 ResultSet rs = stmt.executeQuery()) {
             
@@ -113,7 +109,7 @@ public class VendaDAO extends AbstractDAO<VendaModel, UUID> {
         
         List<VendaModel> vendas = new ArrayList<>();
         
-        try (Connection conn = UtilsDB.getConnection();
+        try (Connection conn = DatabaseMethodsService.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(sql);
                 ResultSet rs = stmt.executeQuery()) {
 
@@ -132,7 +128,7 @@ public class VendaDAO extends AbstractDAO<VendaModel, UUID> {
     public void saveItems(UUID vendaId, List<ItemPedidoModel> itens) {
         String sql = "INSERT INTO tb_item_pedido (pedido_id, produto_id, quantidade) VALUES (?, ?, ?)";
 
-        try (Connection conn = UtilsDB.getConnection();
+        try (Connection conn = DatabaseMethodsService.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             for (ItemPedidoModel item : itens) {
@@ -154,7 +150,7 @@ public class VendaDAO extends AbstractDAO<VendaModel, UUID> {
         String sqlItem = "INSERT INTO item_pedido (venda_id, produto_id, quantidade) VALUES (?, ?, ?)";
         String sqlUpdateEstoque = "UPDATE tb_produto SET estoque = estoque - ? WHERE uuid = ?";
 
-        try (Connection conn = UtilsDB.getConnection()) {
+        try (Connection conn = DatabaseMethodsService.getConnection()) {
             conn.setAutoCommit(false);
 
             try (PreparedStatement stmtVenda = conn.prepareStatement(sqlVenda);
@@ -221,7 +217,7 @@ public class VendaDAO extends AbstractDAO<VendaModel, UUID> {
     """;
 
 
-    try (Connection conn = UtilsDB.getConnection();
+    try (Connection conn = DatabaseMethodsService.getConnection();
          PreparedStatement stmt = conn.prepareStatement(sql)) {
 
         stmt.setTimestamp(1, new java.sql.Timestamp(dataInicio.getTime()));

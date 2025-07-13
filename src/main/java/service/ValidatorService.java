@@ -1,4 +1,4 @@
-package util;
+package service;
 
 import java.awt.Color;
 import java.awt.event.KeyEvent;
@@ -12,7 +12,7 @@ import javax.swing.UIManager;
  *
  * @author jeff_
  */
-public class Validator {
+public class ValidatorService {
     
     public ArrayList<String> errorMessages = new ArrayList<>();
     

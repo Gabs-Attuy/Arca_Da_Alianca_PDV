@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package util;
+package service;
 
 /**
  *
@@ -15,7 +15,7 @@ import com.google.zxing.common.BitMatrix;
 import com.google.zxing.oned.EAN13Writer;
 import java.awt.image.BufferedImage;
 
-public class GeradorCodBarras {
+public class GeradorCodBarrasService {
     
     public static BufferedImage gerarCodigoBarrasEAN13(String codigo) throws WriterException {
         if (codigo == null || codigo.length() != 12 || !codigo.matches("\\d+")) {
