@@ -7,6 +7,7 @@ package template;
 import dao.VendaDAO;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.HeadlessException;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -340,7 +341,7 @@ public class InternalFrameRelatorio extends javax.swing.JInternalFrame {
             JasperReports jasper = new JasperReports();
             jasper.gerarRelatorio(startDate, endDate);
             
-        } catch (Exception ex) {
+        } catch (HeadlessException ex) {
             JOptionPane.showMessageDialog(rootPane, "Não é possível gerar o relatório sem informar as datas de filtro!");
         }
     }//GEN-LAST:event_btnGerarRelatorioActionPerformed
