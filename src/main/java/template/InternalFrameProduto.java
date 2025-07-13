@@ -28,6 +28,7 @@ public class InternalFrameProduto extends javax.swing.JInternalFrame {
     private int totalPaginas = 0;
     /**
      * Creates new form InternalFrameProduto
+     * @param desktop
      */
     public InternalFrameProduto(JDesktopPane desktop) {
         initComponents();

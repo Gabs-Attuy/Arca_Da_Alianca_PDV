@@ -13,6 +13,7 @@ import java.util.Locale;
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 import javax.swing.JDesktopPane;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import model.ItemPedidoModel;
@@ -77,7 +78,9 @@ public class InternalFrameVenda extends javax.swing.JInternalFrame {
                 BigDecimal troco = valorRecebido.subtract(totalVenda);
 
                 if (troco.compareTo(BigDecimal.ZERO) < 0) {
-                    javax.swing.JOptionPane.showMessageDialog(this, "Valor insuficiente para a compra!");
+                    javax.swing.JOptionPane.showMessageDialog(this, "Valor insuficiente para a compra!", 
+                            "Valor insuficiente",
+                            JOptionPane.INFORMATION_MESSAGE);
                     lblTroco.setText("TROCO: R$0.00");
                     return;
                 }
@@ -85,7 +88,9 @@ public class InternalFrameVenda extends javax.swing.JInternalFrame {
                 lblTroco.setText("TROCO: R$ " + troco.setScale(2, RoundingMode.HALF_UP));
 
                 } catch (NumberFormatException ex) {
-                    javax.swing.JOptionPane.showMessageDialog(this, "O valor de troco inserido é inválido!");
+                    JOptionPane.showMessageDialog(this, "O valor de troco inserido é inválido!",
+                            "Erro no troco",
+                    JOptionPane.INFORMATION_MESSAGE);
                 }
         });
         
@@ -135,13 +140,18 @@ public class InternalFrameVenda extends javax.swing.JInternalFrame {
         DefaultTableModel model = (DefaultTableModel) tblVendas.getModel();
 
         if (model.getRowCount() == 0) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Adicione itens à venda antes de finalizar.");
+            javax.swing.JOptionPane.showMessageDialog(this, "Adicione itens à venda antes de finalizar.",
+                    "Erro ao finalizar venda",
+                    JOptionPane.INFORMATION_MESSAGE);
             return;
         }
 
         String formaSelecionada = getSelectedButtonText(buttonGroup1);
         if (formaSelecionada == null) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Selecione uma forma de pagamento.");
+            javax.swing.JOptionPane.showMessageDialog(this, "Selecione uma forma de pagamento.",
+                    "Erro ao finalizar a venda",
+                    JOptionPane.INFORMATION_MESSAGE
+            );
             return;
         }
 
@@ -167,7 +177,9 @@ public class InternalFrameVenda extends javax.swing.JInternalFrame {
             boolean sucesso = vdao.saveWithItems(venda, itens);
 
             if (sucesso) {
-                javax.swing.JOptionPane.showMessageDialog(this, "Venda finalizada com sucesso!");
+                javax.swing.JOptionPane.showMessageDialog(this, "Venda finalizada com sucesso!", 
+                        "Sucesso",
+                        JOptionPane.INFORMATION_MESSAGE);
 
                 try {
                     SnsService snsService = new SnsService();
@@ -192,12 +204,16 @@ public class InternalFrameVenda extends javax.swing.JInternalFrame {
                 lblTroco.setText("TROCO: R$ 0.00");
                 txtTroco.setText("");
             } else {
-                javax.swing.JOptionPane.showMessageDialog(this, "Erro ao finalizar venda.");
+                javax.swing.JOptionPane.showMessageDialog(this, "Erro ao finalizar venda.", 
+                        "Erro",
+                        JOptionPane.ERROR_MESSAGE);
             }
 
         } catch (Exception ex) {
             ex.printStackTrace();
-            javax.swing.JOptionPane.showMessageDialog(this, "Erro ao finalizar venda.");
+            javax.swing.JOptionPane.showMessageDialog(this, "Erro ao finalizar venda.", 
+                    "Erro", 
+                    JOptionPane.ERROR_MESSAGE);
         }
     }
     
@@ -408,6 +424,11 @@ public class InternalFrameVenda extends javax.swing.JInternalFrame {
         btnFinalizarVenda.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnFinalizarVenda.setForeground(new java.awt.Color(255, 255, 255));
         btnFinalizarVenda.setText("Finalizar");
+        btnFinalizarVenda.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFinalizarVendaActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -640,6 +661,10 @@ public class InternalFrameVenda extends javax.swing.JInternalFrame {
 
     private void rbDinheiroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbDinheiroActionPerformed
     }//GEN-LAST:event_rbDinheiroActionPerformed
+
+    private void btnFinalizarVendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFinalizarVendaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnFinalizarVendaActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

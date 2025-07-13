@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JInternalFrameFormInfo">
+<Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JInternalFrameFormInfo">
   <NonVisualComponents>
     <Component class="javax.swing.JButton" name="btnGerarRelatorio">
       <Properties>
@@ -23,6 +23,8 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="jRadioButton3"/>
       </Properties>
+    </Component>
+    <Component class="javax.swing.ButtonGroup" name="rbGroupFiltroRelatorio">
     </Component>
   </NonVisualComponents>
   <SyntheticProperties>
@@ -243,11 +245,17 @@
     </Component>
     <Component class="javax.swing.JRadioButton" name="rbProdSemEstoque">
       <Properties>
+        <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+          <ComponentRef name="rbGroupFiltroRelatorio"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="Apenas produtos sem estoque"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JRadioButton" name="rbTodosProd">
       <Properties>
+        <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+          <ComponentRef name="rbGroupFiltroRelatorio"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="Todos os produtos"/>
       </Properties>
     </Component>

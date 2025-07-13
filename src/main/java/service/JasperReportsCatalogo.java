@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package service;
 
 import com.google.zxing.WriterException;
@@ -41,7 +37,7 @@ public class JasperReportsCatalogo {
             List<ProdutoCatalogoDTO> dados = converterParaCatalogo(produtos);
             
             // 2. Carregar JRXML
-            String caminhoJrxml = "src/main/java/model/CatalogoProdutosModel.jrxml";
+            String caminhoJrxml = "src/main/java/jrxml/CatalogoProdutosModel.jrxml";
             JasperReport jasperReport = JasperCompileManager.compileReport(caminhoJrxml);
 
             // 3. Preencher parâmetros
