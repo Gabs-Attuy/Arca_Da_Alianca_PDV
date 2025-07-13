@@ -12,7 +12,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import model.ProdutoModel;
-import service.JasperReportsCatalogo;
+import service.JasperReportsService;
 import service.ValidatorService;
 
 /**
@@ -346,7 +346,7 @@ public class InternalFrameProduto extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_updateProductActionPerformed
 
     private void btnGenerateCatalogActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerateCatalogActionPerformed
-        JasperReportsCatalogo jasper = new JasperReportsCatalogo();
+        JasperReportsService jasper = new JasperReportsService();
         jasper.gerarCatalogo();
     }//GEN-LAST:event_btnGenerateCatalogActionPerformed
 
