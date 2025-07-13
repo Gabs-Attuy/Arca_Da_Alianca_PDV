@@ -48,5 +48,4 @@ public class GeradorCodBarrasServiceTest {
 
         assertEquals("Código EAN-13 precisa ter exatamente 12 dígitos numéricos.", exception.getMessage());
     }
-    
 }
