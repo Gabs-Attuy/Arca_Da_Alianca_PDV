@@ -4,6 +4,7 @@
  */
 package util;
 
+import dao.ProdutoDAO;
 import dao.VendaDAO;
 import dto.ItemVendaDTO;
 import java.io.File;
@@ -13,6 +14,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.swing.JOptionPane;
+import model.ProdutoModel;
+import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -27,7 +30,7 @@ import net.sf.jasperreports.view.JasperViewer;
  */
 public class JasperReports {
     
-    public void gerarRelatorio(Date dataInicio, Date dataFim) {
+    public void gerarRelatorioVendas(Date dataInicio, Date dataFim) {
         try {
             
             // 1. Buscar dados
@@ -79,5 +82,19 @@ public class JasperReports {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    
+    public void gerarRelatorioProduto() throws JRException {
+        ProdutoDAO produtoDAO = new ProdutoDAO();
+        List<ProdutoModel> produtos = produtoDAO.listarProdutosParaRelatorio(false);
+
+        Map<String, Object> parametros = new HashMap<>();
+        JasperReport jasperReport = JasperCompileManager.compileReport("src/main/java/model/RelatorioProdutoModel.jrxml");
+
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parametros, new JRBeanCollectionDataSource(produtos));
+        JasperExportManager.exportReportToPdfFile(jasperPrint, "relatorio_produtos.pdf");
+        
+        JasperViewer.viewReport(jasperPrint, false);
+        
     }
 }

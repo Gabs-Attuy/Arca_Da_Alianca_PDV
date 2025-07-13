@@ -90,7 +90,7 @@ public class TelaInicial extends javax.swing.JFrame {
         btnEstoque.setBackground(new java.awt.Color(13, 45, 89));
         btnEstoque.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnEstoque.setForeground(new java.awt.Color(255, 255, 255));
-        btnEstoque.setText("Estoque");
+        btnEstoque.setText("Relatório de estoque");
         btnEstoque.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 btnEstoqueMouseEntered(evt);
@@ -108,7 +108,7 @@ public class TelaInicial extends javax.swing.JFrame {
         btnRelatorios.setBackground(new java.awt.Color(13, 45, 89));
         btnRelatorios.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnRelatorios.setForeground(new java.awt.Color(255, 255, 255));
-        btnRelatorios.setText("Relatórios");
+        btnRelatorios.setText("Relatório de venda");
         btnRelatorios.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 btnRelatoriosMouseEntered(evt);
@@ -232,7 +232,8 @@ public class TelaInicial extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnEstoqueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEstoqueActionPerformed
-
+        InternalFrameRelatorioProduto tela = new InternalFrameRelatorioProduto(dpPrincipal);
+        abrirFrame(tela, dpPrincipal);
     }//GEN-LAST:event_btnEstoqueActionPerformed
 
     private void btnProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProdutosActionPerformed
