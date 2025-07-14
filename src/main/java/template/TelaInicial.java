@@ -69,6 +69,7 @@ public class TelaInicial extends javax.swing.JFrame {
         btnProdutos.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnProdutos.setForeground(new java.awt.Color(255, 255, 255));
         btnProdutos.setText("Produtos");
+        btnProdutos.setName("btnProdutos"); // NOI18N
         btnProdutos.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 btnProdutosMouseEntered(evt);
@@ -87,6 +88,7 @@ public class TelaInicial extends javax.swing.JFrame {
         btnEstoque.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnEstoque.setForeground(new java.awt.Color(255, 255, 255));
         btnEstoque.setText("Relatório de estoque");
+        btnEstoque.setName("btnRelatorioEstoque"); // NOI18N
         btnEstoque.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 btnEstoqueMouseEntered(evt);
@@ -105,6 +107,7 @@ public class TelaInicial extends javax.swing.JFrame {
         btnRelatorios.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnRelatorios.setForeground(new java.awt.Color(255, 255, 255));
         btnRelatorios.setText("Relatório de venda");
+        btnRelatorios.setName("btnRelatorioVendas"); // NOI18N
         btnRelatorios.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 btnRelatoriosMouseEntered(evt);
@@ -123,6 +126,7 @@ public class TelaInicial extends javax.swing.JFrame {
         btnVendas.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnVendas.setForeground(new java.awt.Color(255, 255, 255));
         btnVendas.setText("Vendas");
+        btnVendas.setName("btnVendas"); // NOI18N
         btnVendas.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 btnVendasMouseEntered(evt);
@@ -203,7 +207,7 @@ public class TelaInicial extends javax.swing.JFrame {
             .addGroup(dpPrincipalLayout.createSequentialGroup()
                 .addGap(112, 112, 112)
                 .addComponent(jLabel2)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(137, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
