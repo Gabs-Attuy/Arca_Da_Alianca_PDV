@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.HeadlessException;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import javax.swing.JDesktopPane;
@@ -329,6 +330,15 @@ public class InternalFrameRelatorio extends javax.swing.JInternalFrame {
                 return;
             }
             
+            // Ajustar a data final para o final do dia (23:59:59)
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(endDate);
+            calendar.set(Calendar.HOUR_OF_DAY, 23);
+            calendar.set(Calendar.MINUTE, 59);
+            calendar.set(Calendar.SECOND, 59);
+            calendar.set(Calendar.MILLISECOND, 999);
+            endDate = calendar.getTime();
+
             JasperReportsService jasper = new JasperReportsService();
             jasper.gerarRelatorioVendas(startDate, endDate);
             
