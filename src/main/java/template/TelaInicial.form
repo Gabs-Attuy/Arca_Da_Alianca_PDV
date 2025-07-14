@@ -109,6 +109,7 @@
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Produtos"/>
+            <Property name="name" type="java.lang.String" value="btnProdutos" noResource="true"/>
           </Properties>
           <Events>
             <EventHandler event="mouseEntered" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnProdutosMouseEntered"/>
@@ -128,6 +129,7 @@
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Relat&#xf3;rio de estoque"/>
+            <Property name="name" type="java.lang.String" value="btnRelatorioEstoque" noResource="true"/>
           </Properties>
           <Events>
             <EventHandler event="mouseEntered" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnEstoqueMouseEntered"/>
@@ -147,6 +149,7 @@
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Relat&#xf3;rio de venda"/>
+            <Property name="name" type="java.lang.String" value="btnRelatorioVendas" noResource="true"/>
           </Properties>
           <Events>
             <EventHandler event="mouseEntered" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnRelatoriosMouseEntered"/>
@@ -166,6 +169,7 @@
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Vendas"/>
+            <Property name="name" type="java.lang.String" value="btnVendas" noResource="true"/>
           </Properties>
           <Events>
             <EventHandler event="mouseEntered" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnVendasMouseEntered"/>
