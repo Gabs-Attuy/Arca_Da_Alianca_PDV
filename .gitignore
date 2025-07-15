@@ -33,3 +33,6 @@ Thumbs.db
 # Personal config files
 config.properties
 aws-credentials.properties
+
+# PDF files
+*.pdf

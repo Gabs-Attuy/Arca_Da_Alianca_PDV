@@ -167,7 +167,7 @@ public class JasperReportsService {
             try {
                 ProdutoCatalogoDTO dto = new ProdutoCatalogoDTO(
                     produto.getNome(),
-                    produto.getCodigoBarras(),
+                    produto.getCodigoBarras().substring(0, 11),
                     produto.getCategoria(),
                     GeradorCodBarrasService.gerarCodigoBarrasEAN13(produto.getCodigoBarras())
                 );
