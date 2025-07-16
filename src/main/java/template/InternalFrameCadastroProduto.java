@@ -26,7 +26,7 @@ public class InternalFrameCadastroProduto extends javax.swing.JInternalFrame {
         
         BufferedImage imagemCodigo;
         try {
-            imagemCodigo = GeradorCodBarrasService.gerarCodigoBarrasEAN13(txtCodigoBarras.getText());
+            imagemCodigo = GeradorCodBarrasService.gerarCodigoBarrasEAN13(txtCodigoBarras.getText().substring(0, 12));
             lblBarcode.setIcon(new ImageIcon(imagemCodigo));
             lblBarcode.setText(""); // remove o texto padrão
         } catch (WriterException e) {

@@ -6,6 +6,7 @@ import java.util.UUID;
 /**
  *
  * @author jeffe
+ * @author gabs
  */
 public class ProdutoModel {
     
@@ -28,12 +29,27 @@ public class ProdutoModel {
         this.estoque = 0;
         this.codigoBarras = codigoBarras;
     }
-    
+
     public static String generateBarCodeEAN13() {
         long timestamp = System.currentTimeMillis();
-        return String.valueOf(timestamp).substring(0, 12);
+        String codigo12 = String.valueOf(timestamp).substring(0, 12);
+        char dv = calcularDigitoVerificador(codigo12);
+        return codigo12 + dv;
     }
+    
+    public static char calcularDigitoVerificador(String codigo12Digitos) {
+        int soma = 0;
+        for (int i = 0; i < 12; i++) {
+            int digito = Character.getNumericValue(codigo12Digitos.charAt(i));
+            soma += digito * (i % 2 == 0 ? 1 : 3);
+        }
 
+        int resultado = soma % 10;
+        int dv = (10 - resultado) % 10;
+
+        return Character.forDigit(dv, 10);
+    }
+    
     public UUID getUuid() {
         return uuid;
     }
@@ -81,6 +97,5 @@ public class ProdutoModel {
     public void setCodigoBarras(String codigoBarras) {
         this.codigoBarras = codigoBarras;
     }
-
    
 }

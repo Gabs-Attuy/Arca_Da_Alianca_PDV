@@ -35,7 +35,7 @@ public class InternalFrameAlteracaoProduto extends javax.swing.JInternalFrame {
         txtCodigoBarras.setText(produto.getCodigoBarras());
         BufferedImage imagemCodigo;
         try {
-            imagemCodigo = GeradorCodBarrasService.gerarCodigoBarrasEAN13(txtCodigoBarras.getText());
+            imagemCodigo = GeradorCodBarrasService.gerarCodigoBarrasEAN13(txtCodigoBarras.getText().substring(0, 12));
             lblBarcode.setIcon(new ImageIcon(imagemCodigo));
             lblBarcode.setText("");
         } catch (WriterException e) {
