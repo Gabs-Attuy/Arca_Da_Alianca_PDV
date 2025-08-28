@@ -46,7 +46,7 @@ public class InternalFrameProduto extends javax.swing.JInternalFrame {
         
         productsTable.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 14));
         productsTable.getTableHeader().setBackground(new Color(13, 45, 89));
-        productsTable.getTableHeader().setForeground(Color.WHITE);
+        productsTable.getTableHeader().setForeground(Color.BLACK);
         configurarFiltro();
     }
 

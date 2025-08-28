@@ -85,7 +85,7 @@ public class InternalFrameRelatorio extends javax.swing.JInternalFrame {
         
         table.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 14));
         table.getTableHeader().setBackground(new Color(13, 45, 89));
-        table.getTableHeader().setForeground(Color.WHITE);
+        table.getTableHeader().setForeground(Color.BLACK);
     }
 
     /**

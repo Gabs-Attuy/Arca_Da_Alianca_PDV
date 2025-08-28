@@ -167,9 +167,9 @@ public class JasperReportsService {
             try {
                 ProdutoCatalogoDTO dto = new ProdutoCatalogoDTO(
                     produto.getNome(),
-                    produto.getCodigoBarras().substring(0, 11),
+                    produto.getCodigoBarras(),
                     produto.getCategoria(),
-                    GeradorCodBarrasService.gerarCodigoBarrasEAN13(produto.getCodigoBarras())
+                    GeradorCodBarrasService.gerarCodigoBarrasEAN13(produto.getCodigoBarras().substring(0, 12))
                 );
                 return dto;
             } catch (WriterException e) {
