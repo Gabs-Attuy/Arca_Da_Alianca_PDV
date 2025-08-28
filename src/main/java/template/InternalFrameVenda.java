@@ -64,7 +64,7 @@ public class InternalFrameVenda extends javax.swing.JInternalFrame {
                     
                     if (produtoAtual != null) {
                         txtNomeProduto.setText(produtoAtual.getNome());
-                        txtNomeProduto.setForeground(Color.BLACK);
+                        txtNomeProduto.setForeground(Color.WHITE);
                         txtEstoqueAtual.setText(String.valueOf(produtoAtual.getEstoque()));
                     }
                 }
