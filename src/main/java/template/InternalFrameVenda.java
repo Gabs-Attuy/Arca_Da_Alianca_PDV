@@ -20,6 +20,7 @@ import model.ItemPedidoModel;
 import model.ProdutoModel;
 import model.VendaModel;
 import service.SnsService;
+import service.ValidatorService;
 /**
  *
  * @author jeff_
@@ -42,6 +43,15 @@ public class InternalFrameVenda extends javax.swing.JInternalFrame {
         txtTroco.setVisible(false);
         btnCalcTroco.setVisible(false);
         lblTroco.setVisible(false);
+        
+        ValidatorService validator = new ValidatorService();
+        
+        txtBarCodeSearch.addKeyListener(new java.awt.event.KeyAdapter() {
+            @Override
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                validator.barCodeSearchValidate(evt);
+            }
+        });
         
         txtBarCodeSearch.addKeyListener(new KeyAdapter() {
             @Override
@@ -133,7 +143,7 @@ public class InternalFrameVenda extends javax.swing.JInternalFrame {
         
         table.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 14));
         table.getTableHeader().setBackground(new Color(13, 45, 89));
-        table.getTableHeader().setForeground(Color.WHITE);
+        table.getTableHeader().setForeground(Color.BLACK);
     }
     
     private void finalizarVenda() {
